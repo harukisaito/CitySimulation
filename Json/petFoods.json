@@ -1,0 +1,18 @@
+[
+  {
+    "Name": "Pedigree",
+    "Energy": 3,
+    "Taste": 3,
+    "Healthiness": 0,
+    "Cost": 20,
+    "Time": 0.4
+  },
+  {
+    "Name": "Sheba",
+    "Energy": 3,
+    "Taste": 2,
+    "Healthiness": 0,
+    "Cost": 15,
+    "Time": 0.6
+  }
+]

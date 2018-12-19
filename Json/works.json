@@ -1,0 +1,29 @@
+[
+  {
+    "Name": "office",
+    "Income": 80,
+    "Stress": 4,
+    "Energy": 5,
+    "Requirement": 5,
+    "Time": 10.2,
+    "Count": 0
+  },
+  {
+    "Name": "Mc Donalds",
+    "Income": 30,
+    "Stress": 5,
+    "Energy": 5,
+    "Requirement": 1,
+    "Time": 7.1,
+    "Count": 0
+  },
+  {
+    "Name": "delivery",
+    "Income": 50,
+    "Stress": 4,
+    "Energy": 4,
+    "Requirement": 2,
+    "Time": 6.3,
+    "Count": 0
+  }
+]

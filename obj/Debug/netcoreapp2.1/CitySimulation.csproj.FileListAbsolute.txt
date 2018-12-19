@@ -1,0 +1,11 @@
+/Users/haruki/Dev/CitySimulation/CitySimulation/obj/Debug/netcoreapp2.1/CitySimulation.csprojAssemblyReference.cache
+/Users/haruki/Dev/CitySimulation/CitySimulation/obj/Debug/netcoreapp2.1/CitySimulation.csproj.CoreCompileInputs.cache
+/Users/haruki/Dev/CitySimulation/CitySimulation/obj/Debug/netcoreapp2.1/CitySimulation.AssemblyInfoInputs.cache
+/Users/haruki/Dev/CitySimulation/CitySimulation/obj/Debug/netcoreapp2.1/CitySimulation.AssemblyInfo.cs
+/Users/haruki/Dev/CitySimulation/CitySimulation/bin/Debug/netcoreapp2.1/CitySimulation.deps.json
+/Users/haruki/Dev/CitySimulation/CitySimulation/bin/Debug/netcoreapp2.1/CitySimulation.runtimeconfig.json
+/Users/haruki/Dev/CitySimulation/CitySimulation/bin/Debug/netcoreapp2.1/CitySimulation.runtimeconfig.dev.json
+/Users/haruki/Dev/CitySimulation/CitySimulation/bin/Debug/netcoreapp2.1/CitySimulation.dll
+/Users/haruki/Dev/CitySimulation/CitySimulation/bin/Debug/netcoreapp2.1/CitySimulation.pdb
+/Users/haruki/Dev/CitySimulation/CitySimulation/obj/Debug/netcoreapp2.1/CitySimulation.dll
+/Users/haruki/Dev/CitySimulation/CitySimulation/obj/Debug/netcoreapp2.1/CitySimulation.pdb

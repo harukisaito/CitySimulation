@@ -1,0 +1,58 @@
+[
+  {
+    "Name": "Pasta",
+    "Energy": 3,
+    "Taste": 4,
+    "Healthiness": 1,
+    "Cost": 3,
+    "Time": 1.1
+  },
+  {
+    "Name": "Salad",
+    "Energy": 1,
+    "Taste": 2,
+    "Healthiness": -2,
+    "Cost": 1,
+    "Time": 0.3
+  },
+  {
+    "Name": "Burger",
+    "Energy": 3,
+    "Taste": 4,
+    "Healthiness": 2,
+    "Cost": 5,
+    "Time": 2.3
+  },
+  {
+    "Name": "Fried Chicken",
+    "Energy": 3,
+    "Taste": 4,
+    "Healthiness": 2,
+    "Cost": 5,
+    "Time": 2.5
+  },
+  {
+    "Name": "Soup",
+    "Energy": 1,
+    "Taste": 3,
+    "Healthiness": -1,
+    "Cost": 1,
+    "Time": 0.9
+  },
+  {
+    "Name": "Bacon and eggs",
+    "Energy": 2,
+    "Taste": 3,
+    "Healthiness": 1,
+    "Cost": 1,
+    "Time": 0.4
+  },
+  {
+    "Name": "Croissant",
+    "Energy": 1,
+    "Taste": 3,
+    "Healthiness": 1,
+    "Cost": 1,
+    "Time": 0.2
+  }
+]

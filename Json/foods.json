@@ -1,0 +1,50 @@
+[
+  {
+    "Name": "Soup",
+    "Energy": 1,
+    "Taste": 3,
+    "Healthiness": 0,
+    "Cost": 5,
+    "Time": 0.2
+  },
+  {
+    "Name": "Pasta",
+    "Energy": 3,
+    "Taste": 4,
+    "Healthiness": 3,
+    "Cost": 10,
+    "Time": 0.4
+  },
+  {
+    "Name": "Fried Chicken",
+    "Energy": 3,
+    "Taste": 4,
+    "Healthiness": 3,
+    "Cost": 10,
+    "Time": 0.3
+  },
+  {
+    "Name": "Burger",
+    "Energy": 3,
+    "Taste": 4,
+    "Healthiness": 3,
+    "Cost": 10,
+    "Time": 0.5
+  },
+  {
+    "Name": "Yoghurt",
+    "Energy": 1,
+    "Taste": 1,
+    "Healthiness": -1,
+    "Cost": 1,
+    "Time": 0.1
+  },
+  {
+    "Name": "Apple",
+    "Energy": 1,
+    "Taste": 2,
+    "Healthiness": -1,
+    "Cost": 1,
+    "Time": 0.1
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "Cost": 10,
+    "Happiness": 10,
+    "Social": true,
+    "Time": 4.2
+  },
+  {
+    "Cost": 15,
+    "Happiness": 15,
+    "Social": true,
+    "Time": 5.6
+  }
+]

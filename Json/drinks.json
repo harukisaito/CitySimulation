@@ -1,0 +1,29 @@
+[
+  {
+    "Alcohol": false,
+    "Name": "Water",
+    "Energy": 0,
+    "Taste": 0,
+    "Healthiness": -1,
+    "Cost": 1,
+    "Time": 0.1
+  },
+  {
+    "Alcohol": false,
+    "Name": "Coffee",
+    "Energy": 2,
+    "Taste": 3,
+    "Healthiness": -2,
+    "Cost": 1,
+    "Time": 0.1
+  },
+  {
+    "Alcohol": true,
+    "Name": "Beer",
+    "Energy": 1,
+    "Taste": 2,
+    "Healthiness": 2,
+    "Cost": 3,
+    "Time": 0.1
+  }
+]

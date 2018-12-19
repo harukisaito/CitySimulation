@@ -1,0 +1,87 @@
+[
+  {
+    "pets": [],
+    "KarmaKonto": {
+      "KarmaPoints": 0
+    },
+    "Name": "Jerry C-137",
+    "Money": 0,
+    "Competence": 0,
+    "Debt": 0.0,
+    "Age": 0,
+    "Height": 0,
+    "Weight": 0,
+    "Energy": 0,
+    "Gender": "male",
+    "Fitness": 0,
+    "Happiness": 0
+  },
+  {
+    "pets": [],
+    "KarmaKonto": {
+      "KarmaPoints": 0
+    },
+    "Name": "Beth C-137",
+    "Money": 0,
+    "Competence": 0,
+    "Debt": 0.0,
+    "Age": 0,
+    "Height": 0,
+    "Weight": 0,
+    "Energy": 0,
+    "Gender": "female",
+    "Fitness": 0,
+    "Happiness": 0
+  },
+  {
+    "pets": [],
+    "KarmaKonto": {
+      "KarmaPoints": 0
+    },
+    "Name": "Cronenberg Rick",
+    "Money": 0,
+    "Competence": 0,
+    "Debt": 0.0,
+    "Age": 0,
+    "Height": 0,
+    "Weight": 0,
+    "Energy": 0,
+    "Gender": "male",
+    "Fitness": 0,
+    "Happiness": 0
+  },
+  {
+    "pets": [],
+    "KarmaKonto": {
+      "KarmaPoints": 0
+    },
+    "Name": "Cronenberg Morty",
+    "Money": 0,
+    "Competence": 0,
+    "Debt": 0.0,
+    "Age": 0,
+    "Height": 0,
+    "Weight": 0,
+    "Energy": 0,
+    "Gender": "male",
+    "Fitness": 0,
+    "Happiness": 0
+  },
+  {
+    "pets": [],
+    "KarmaKonto": {
+      "KarmaPoints": 0
+    },
+    "Name": "Summer C-137",
+    "Money": 0,
+    "Competence": 0,
+    "Debt": 0.0,
+    "Age": 0,
+    "Height": 0,
+    "Weight": 0,
+    "Energy": 0,
+    "Gender": "female",
+    "Fitness": 0,
+    "Happiness": 0
+  }
+]

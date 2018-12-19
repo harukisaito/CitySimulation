@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "Jogging",
+    "Energy": 2,
+    "Fitness": 1,
+    "Dopamine": 3,
+    "Time": 1.1
+  },
+  {
+    "Name": "Cycling",
+    "Energy": 3,
+    "Fitness": 1,
+    "Dopamine": 2,
+    "Time": 2.7
+  },
+  {
+    "Name": "WeightLifting",
+    "Energy": 3,
+    "Fitness": 2,
+    "Dopamine": 2,
+    "Time": 2.9
+  }
+]
