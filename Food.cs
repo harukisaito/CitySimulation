@@ -17,7 +17,7 @@ namespace CitySimulation{
 
         protected int cost;
 
-        protected double time;
+        protected float time;
 
         public string Name
         {
@@ -46,7 +46,7 @@ namespace CitySimulation{
             set {cost = value;}
         }
 
-        public double Time
+        public float Time
         {
             get {return time;}
             set {time = value;}
@@ -58,7 +58,7 @@ namespace CitySimulation{
         /// <param name="healthiness">Pass how bad the food is as int. (0-5)</param>
         /// <param name="cost">Pass the cost of the food as int.</param>
         /// </summary>
-        public Food(string name, int energy, int taste, int healthiness, int cost, double time) 
+        public Food(string name, int energy, int taste, int healthiness, int cost, float time) 
         {
             this.name = name;
             this.energy = energy;

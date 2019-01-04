@@ -12,33 +12,20 @@ namespace CitySimulation
     {
         public List<RealisticWorld> realisticWorlds = new List<RealisticWorld>();
         public List<WeirdWorld> weirdWorlds = new List<WeirdWorld>();
-        private string name;
-        protected double currentTime = 1;
-        protected int day = 1;
-        protected int id;
+        private string universeName;
+        private int id;
+        
+        public string UniverseName
+        {
+            get {return universeName;}
+            set {universeName = value;}
+        }
 
-        public string Name
-        {
-            get {return name;}
-            set {name = value;}
-        }
-        public double CurrentTime
-        {
-            get {return currentTime;}
-            set {currentTime = value;}
-        }
-        public int Day 
-        {
-            get {return day;}
-            set {day = value;}
-        }
         public int Id
         {
             get {return id;}
             set {id = value;}
         }
-
-        private Game game = Game.Instance();
 
         [JsonIgnore]
         public RealisticWorld currentPlayedRealisticWorld;
@@ -49,7 +36,7 @@ namespace CitySimulation
         public Universe(int id, string name)
         {
             this.id = id;
-            this.name = name;
+            this.universeName = name;
         }
 
         public void ChooseWorld()
@@ -58,13 +45,13 @@ namespace CitySimulation
             int choice = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
             if(choice == 1)
             {
-                currentPlayedRealisticWorld = new RealisticWorld(game.NumerateReal(), game.NameWorld());
+                currentPlayedRealisticWorld = new RealisticWorld(Game.GameInstance.NumerateReal(), Game.GameInstance.NameWorld());
                 realisticWorlds.Add(currentPlayedRealisticWorld);
                 currentPlayedRealisticWorld.Introduction();
             }
             if(choice == 2)
             {
-                currentPlayedWeirdWorld = new WeirdWorld(game.NumerateWeird(), game.NameWorld());
+                currentPlayedWeirdWorld = new WeirdWorld(Game.GameInstance.NumerateWeird(), Game.GameInstance.NameWorld());
                 weirdWorlds.Add(currentPlayedWeirdWorld);
                 currentPlayedWeirdWorld.Introduction();
             }
@@ -81,17 +68,17 @@ namespace CitySimulation
                     currentPlayedRealisticWorld.Continue();
                     break;
                 case 2: 
-                    currentPlayedRealisticWorld = new RealisticWorld(game.NumerateReal(), game.NameWorld());
+                    currentPlayedRealisticWorld = new RealisticWorld(Game.GameInstance.NumerateReal(), Game.GameInstance.NameWorld());
                     realisticWorlds.Add(currentPlayedRealisticWorld);
                     Console.WriteLine("\nRealistic world added!");
                     currentPlayedRealisticWorld.Introduction();
                     break;
                 case 3:
-                    currentPlayedWeirdWorld = weirdWorlds[Game.GameInstance.ChooseFromList<WeirdWorld>("weirdWorlds", Game.GameInstance.Deserialize("weirdWorlds", weirdWorlds))];
+                    // currentPlayedWeirdWorld = weirdWorlds[Game.GameInstance.ChooseFromList<WeirdWorld>("weirdWorlds", Game.GameInstance.Deserialize("weirdWorlds", weirdWorlds))];
                     currentPlayedWeirdWorld.Continue();
                     break;
                 case 4:
-                    currentPlayedWeirdWorld = new WeirdWorld(game.NumerateWeird(), game.NameWorld());
+                    currentPlayedWeirdWorld = new WeirdWorld(Game.GameInstance.NumerateWeird(), Game.GameInstance.NameWorld());
                     weirdWorlds.Add(currentPlayedWeirdWorld);
                     Console.WriteLine("\nWeird world added!");
                     currentPlayedWeirdWorld.Introduction();

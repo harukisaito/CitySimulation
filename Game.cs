@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace CitySimulation
 {
@@ -13,7 +15,6 @@ namespace CitySimulation
         public List<Universe> universes = new List<Universe>();
         public Universe currentPlayedUniverse;
         public static Game GameInstance = null;
-        public string readJson;
 
         private Game()
         {
@@ -24,6 +25,10 @@ namespace CitySimulation
             if(GameInstance == null)
             {
                 GameInstance = new Game();
+            }
+            else
+            {
+                throw new Exception("This Singleton already has an instance!");            
             }
             return GameInstance;
         }
@@ -38,6 +43,11 @@ namespace CitySimulation
             return Game.GameInstance.currentPlayedUniverse.currentPlayedRealisticWorld;
         }
 
+        public WeirdWorld GetWeirdWorld()
+        {
+            return Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld;
+        }
+
         private Universe GetUniverse()
         {
             return Game.GameInstance.currentPlayedUniverse;
@@ -47,26 +57,22 @@ namespace CitySimulation
         public void NewGame()
         {
             universes = Deserialize("universes", universes);
-            Universe world = new Universe(Numerate(), NameUniverse());
-            universes.Add(world);
-            currentPlayedUniverse = world;
+            currentPlayedUniverse = new Universe(Numerate(), NameUniverse());
+            universes.Add(currentPlayedUniverse);
             // Serialize<Universe>("universes", universes);
-            Serialize("universes");
-            world.ChooseWorld();
+            // Serialize("universes");
+            currentPlayedUniverse.ChooseWorld();
         }
 
-        internal void LoadGame()
+        public void LoadGame()
         {
-            int id = ChooseFromUniverseList();
             universes = Deserialize("universes", universes);
-            currentPlayedUniverse = universes[id];
+            currentPlayedUniverse = universes[ChooseFromUniverseList()];
             currentPlayedUniverse.ChooseWorldContinue();
-            // TODO: ADD THE OPPORTUNITY TO ADD DIFFERENT WORLDS.
         }
 
         private int Numerate()
         {
-            // TODO: Think about how the GameInstance could know about all Games in worlds.json
             Console.WriteLine("UNIVERSE COUNT=" + universes.Count);
             return universes.Count + 1;
         }
@@ -84,7 +90,7 @@ namespace CitySimulation
         public void ClearList()
         {
             universes.Clear();
-            Serialize("universes");
+            SerializeUniverse("universes");
         }
 
         private string NameUniverse()
@@ -99,23 +105,23 @@ namespace CitySimulation
             return Console.ReadLine();
         }
 
-        public int ChooseFromList<T>(string path, List<T> list)
-        {
-            Deserialize<T>(path, list);
-            Console.WriteLine(list.Count);
-            int counter = 1;
-            foreach(T item in list)
-            {
-                Console.WriteLine("\n[" + counter + "]: " + item);
-                counter++;
-            }
-            Console.WriteLine("\nChoose your preferred " + typeof(T).Name +  "! Press [1] to [" + list.Count + "]");
-            return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
-        }
+        // public int ChooseFromList<T>(string path, List<T> list)
+        // {
+        //     Deserialize<T>(path, list);
+        //     Console.WriteLine(list.Count);
+        //     int counter = 1;
+        //     foreach(T item in list)
+        //     {
+        //         Console.WriteLine("\n[" + counter + "]: " + item);
+        //         counter++;
+        //     }
+        //     Console.WriteLine("\nChoose your preferred " + typeof(T).Name +  "! Press [1] to [" + list.Count + "]");
+        //     return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
+        // }
 
         public int ChooseFromUniverseList()
         {
-            universes = Deserialize("universes", universes);
+            // universes = Deserialize("universes", universes);
             DisplayUniverses();
             Console.WriteLine("\nChoose your preferred universe! Press [1] to [" + universes.Count + "]");
             return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
@@ -123,7 +129,7 @@ namespace CitySimulation
 
         public int ChooseFromRealisticWorldList()
         {
-            universes = Deserialize("universes", universes);
+            // universes = Deserialize("universes", universes);
             DisplayRealisticWorlds();
             Console.WriteLine("\nChoose your preferred world! Press [1] to [" + GetUniverse().realisticWorlds.Count + "]");
             return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
@@ -131,9 +137,9 @@ namespace CitySimulation
 
         public int ChooseFromHumanList()
         {
-            universes = Deserialize("universes", universes);
+            // universes = Deserialize("universes", universes);
             DisplayHumanList();
-            Console.WriteLine("\nChoose your preferred human! Press [1] to [" + GetUniverse().realisticWorlds.Count + "]");
+            Console.WriteLine("\nChoose your preferred human! Press [1] to [" + GetRealisticWorld().humans.Count + "]");
             return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
         }
 
@@ -142,7 +148,7 @@ namespace CitySimulation
             int counter = 1;
             foreach(Universe u in universes)
             {
-                Console.WriteLine("[" + counter + "]: " + u.Name);
+                Console.WriteLine("[" + counter + "]: " + u.UniverseName);
                 counter++;
             }
         }
@@ -182,7 +188,7 @@ namespace CitySimulation
         public void Quit()
         {
             Console.WriteLine("Autosaving your game...");
-            Serialize("universes");
+            SerializeUniverse("universes");
             Console.WriteLine("Saved!");
             Console.WriteLine("Byebye, please come again...");
             Environment.Exit(0);
@@ -190,7 +196,7 @@ namespace CitySimulation
 
         public void ResetTask()
         {
-            Deserialize<Task>("tasks", GetRealisticWorld().tasks);
+            // Deserialize<Task>("tasks", GetRealisticWorld().tasks);
             foreach(Task t in GetRealisticWorld().tasks)
             {
                 t.Completed = false;
@@ -204,227 +210,171 @@ namespace CitySimulation
             if(!File.Exists(path))
             {
                 File.Create(path).Close();
-                Serialize("universes");
+                // SerializeUniverse("universes");
             }
             return path;
         }
 
-        public string ReadJson(string path)
+        private string ReadJson(string path)
         {
             using (StreamReader streamReader = new StreamReader(path))
             {
-                return readJson = streamReader.ReadToEnd();
+                return streamReader.ReadToEnd();
             }
         }
 
         public bool CheckJson(string certainPath)
         {
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            bool empty = string.IsNullOrWhiteSpace(readJson);
-            return empty;
+            return string.IsNullOrWhiteSpace(ReadJson(PathCreator(certainPath)));
         }
 
-        public void FileWriter(string certainPath, string json)
+        private void FileWriter(string certainPath, string json)
         {
-            string path = PathCreator(certainPath);
-            System.IO.File.WriteAllText(path, json);
+            System.IO.File.WriteAllText(PathCreator(certainPath), json);
         }
 
-        private void WriteToDifferentPaths(string certainPath, string json)
+        // private string SerializeObj<T>(List<T> list)
+        // {
+        //     string json = JsonConvert.SerializeObject(list, Formatting.Indented, 
+        //     new JsonSerializerSettings()
+        //         {
+        //             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        //         }
+        //     );
+        //     Console.WriteLine(json);
+        //     return json;
+        // }
+
+        private string SerializeUniverseList()
         {
-            FileWriter(certainPath, json);
+            return JsonConvert.SerializeObject(universes, Formatting.Indented);
         }
 
-        private string SerializeObj<T>(List<T> list)
+        // public void Serialize<T>(string certainPath, List<T> list)
+        // {
+        //     Console.WriteLine("SERIALIZING");
+        //     string json = SerializeObj(list);
+        //     FileWriter(certainPath, json);
+        // }
+
+        public void SerializeUniverse(string certainPath)
         {
-            string json = JsonConvert.SerializeObject(list, Formatting.Indented, 
-            new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
-            Console.WriteLine(json);
-            return json;
+            Console.WriteLine("SERIALIZING UNIVERSE");
+            FileWriter(certainPath, SerializeUniverseList());
         }
 
-        private string SerializeObj()
-        {
-            string json = JsonConvert.SerializeObject(universes, Formatting.Indented, 
-            new JsonSerializerSettings()
-                { 
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
-            Console.WriteLine("outside: " + json);
-            return json;
-        }
+        // public void SerializeHuman(string certainPath)
+        // {
+        //     Console.WriteLine("SERIALIZING HUMANS");
+        //     FileWriter(certainPath, SerializeHumanList());
+        // }
 
-        public void Serialize<T>(string certainPath, List<T> list)
-        {
-            Console.WriteLine("SERIALIZING");
-            string json = SerializeObj(list);
-            WriteToDifferentPaths(certainPath, json);
-        }
+        // private string SerializeHumanList()
+        // {
+        //     return JsonConvert.SerializeObject(GetRealisticWorld().humans, Formatting.Indented, 
+        //         new JsonSerializerSettings()
+        //         { 
+        //             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        //         }
+        //     );
+        // }
 
-        public void Serialize(string certainPath)
-        {
-            string json;
-            DisplayHumanList();
-            Console.WriteLine("SERIALIZING");
-            json = JsonConvert.SerializeObject(GetRealisticWorld().humans, Formatting.Indented, 
-            new JsonSerializerSettings()
-                { 
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
-            WriteToDifferentPaths("humans", json);
-            Console.WriteLine("1: inside" + json);
-            DisplayHumanList();
-            Console.WriteLine("SERIALIZING2");
-            json = JsonConvert.SerializeObject(GetUniverse().realisticWorlds, Formatting.Indented, 
-            new JsonSerializerSettings()
-                { 
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
-            WriteToDifferentPaths("realisticWorlds", json);
-            Console.WriteLine("2: inside" + json);
-            DisplayHumanList();
-            Console.WriteLine("SERIALIZING3");
-            json = JsonConvert.SerializeObject(Game.GameInstance.universes, Formatting.Indented, 
-            new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
-            WriteToDifferentPaths("universes", json);
-            Console.WriteLine("3 inside: " + json);
-            DisplayHumanList();
-            Console.WriteLine("SERIALIZING4");
-            json = SerializeObj();
-            WriteToDifferentPaths(certainPath, json);
-            Console.WriteLine("4 inside: " + json);
-            DisplayHumanList();
-        }
+        // public void SerializeAll()
+        // {
+        //     SerializeUniverse("universes");
+        //     // SerializeHuman("humans");
+        // }
 
+        // public void Deserialize<T>(string certainPath, List<T> list)
+        // {
+        //     // Console.WriteLine("DESERIALIZING");
+        //    
+        //     // ReadJson(path);
+        //     // // Console.WriteLine(readJson);
+        //     // list = JsonConvert.DeserializeObject<List<T>>(readJson);
+        // }
 
-
-        public void Deserialize<T>(string certainPath, List<T> list)
+        public List<Human> Deserialize(string certainPath, List<Human> humans)
         {
             Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
             // Console.WriteLine(readJson);
-            list = JsonConvert.DeserializeObject<List<T>>(readJson);
+            return JsonConvert.DeserializeObject<List<Human>>(ReadJson(PathCreator(certainPath)));
         }
 
         public List<Task> Deserialize(string certainPath, List<Task> tasks)
         {
             Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return JsonConvert.DeserializeObject<List<Task>>(readJson);
+            // Console.WriteLine(ReadJson(path);
+            return JsonConvert.DeserializeObject<List<Task>>(ReadJson(PathCreator(certainPath)));
         }
 
         public List<Universe> Deserialize(string certainPath, List<Universe> universes)
         {
             Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            readJson = ReadJson(path);
-            Console.WriteLine(readJson);
-            return JsonConvert.DeserializeObject<List<Universe>>(readJson);
+            return JsonConvert.DeserializeObject<List<Universe>>(ReadJson(PathCreator(certainPath)));
         }
 
-        public List<RealisticWorld> Deserialize(string certainPath, List<RealisticWorld> realisticworlds)
-        {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return realisticworlds = JsonConvert.DeserializeObject<List<RealisticWorld>>(readJson);
-        }
+        // public List<RealisticWorld> Deserialize(string certainPath, List<RealisticWorld> realisticworlds)
+        // {
+        //     Console.WriteLine("DESERIALIZING");
+            
+        //     // Console.WriteLine(readJson);
+        //     return JsonConvert.DeserializeObject<List<RealisticWorld>>(ReadJson(PathCreator(certainPath)));
+        // }
 
-        public List<WeirdWorld> Deserialize(string certainPath, List<WeirdWorld> weirdWorlds)
-        {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return weirdWorlds = JsonConvert.DeserializeObject<List<WeirdWorld>>(readJson);
-        }
+        // public List<WeirdWorld> Deserialize(string certainPath, List<WeirdWorld> weirdWorlds)
+        // {
+        //     Console.WriteLine("DESERIALIZING");
+        //     // Console.WriteLine(readJson);
+        //     return JsonConvert.DeserializeObject<List<WeirdWorld>>(ReadJson(PathCreator(certainPath)));
+        // }
 
-        public string[] Deserialize(string certainPath, string[] array)
+        public string[] Deserialize(string certainPath)
         {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
             // Console.WriteLine(readJson);
-            return array = JsonConvert.DeserializeObject<string[]>(readJson);
+            return JsonConvert.DeserializeObject<string[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Food[] Deserialize(string certainPath, Food[] array)
         {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
             // Console.WriteLine(readJson);
-            return array = JsonConvert.DeserializeObject<Food[]>(readJson);
+            return JsonConvert.DeserializeObject<Food[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Drink[] Deserialize(string certainPath, Drink[] array)
         {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return array = JsonConvert.DeserializeObject<Drink[]>(readJson);
+            // Console.WriteLine(ReadJson(path));
+            return JsonConvert.DeserializeObject<Drink[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Entertainment[] Deserialize(string certainPath, Entertainment[] array)
         {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return array = JsonConvert.DeserializeObject<Entertainment[]>(readJson);
+            // Console.WriteLine(ReadJson(path));
+            return JsonConvert.DeserializeObject<Entertainment[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public PetFood[] Deserialize(string certainPath, PetFood[] array)
         {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return array = JsonConvert.DeserializeObject<PetFood[]>(readJson);
+            // Console.WriteLine(ReadJson(path));
+            return JsonConvert.DeserializeObject<PetFood[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Exercise[] Deserialize(string certainPath, Exercise[] array)
         {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return array = JsonConvert.DeserializeObject<Exercise[]>(readJson);
+            // Console.WriteLine(ReadJson(path));
+            return JsonConvert.DeserializeObject<Exercise[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Work[] Deserialize(string certainPath, Work[] array)
         {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return array = JsonConvert.DeserializeObject<Work[]>(readJson);
+            // Console.WriteLine(ReadJson(path));
+            return JsonConvert.DeserializeObject<Work[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Human[] Deserialize(string certainPath, Human[] array)
         {
-            Console.WriteLine("DESERIALIZING");
-            string path = PathCreator(certainPath);
-            ReadJson(path);
-            // Console.WriteLine(readJson);
-            return array = JsonConvert.DeserializeObject<Human[]>(readJson);
+            // Console.WriteLine(ReadJson(path));
+            return JsonConvert.DeserializeObject<Human[]>(ReadJson(PathCreator(certainPath)));
         }
     }
 }

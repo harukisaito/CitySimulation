@@ -11,7 +11,7 @@ namespace CitySimulation{
         protected int energy;
         protected int fitness;
         protected int dopamine;
-        protected double time;
+        protected float time;
         
         public string Name
         {
@@ -35,7 +35,7 @@ namespace CitySimulation{
             get {return dopamine;}
             set {dopamine = value;}
         }
-        public double Time
+        public float Time
         {
             get {return time;}
             set {time = value;}
@@ -46,7 +46,7 @@ namespace CitySimulation{
         /// <param name="fitness">Pass the increase of the fitness level as int.</param>
         /// <param name="dopamine">Pass the amount of dopamine you get as int.</param>
         /// </summary>
-        public Exercise(string name, int energy, int fitness, int dopamine, double time) 
+        public Exercise(string name, int energy, int fitness, int dopamine, float time) 
         {
             this.name = name;
             this.energy = energy;

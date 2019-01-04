@@ -13,7 +13,7 @@ namespace CitySimulation{
         private int stress;
         private int energy;
         private int requirement;
-        private double time;
+        private float time;
         private int count;
 
         public string Name
@@ -46,7 +46,7 @@ namespace CitySimulation{
             set {requirement = value;}
         }
 
-        public double Time
+        public float Time
         {
             get {return time;}
             set {time = value;}
@@ -64,7 +64,7 @@ namespace CitySimulation{
         /// <param name="energy">Pass the energy loss you experience due to the work as int.</param>
         /// <param name="requirement">Pass he requirement needed for the work as int.</param>
         /// </summary>
-        public Work(string name, int income, int stress, int energy, int requirement, double time, int count) 
+        public Work(string name, int income, int stress, int energy, int requirement, float time, int count) 
         {
             this.name = name;
             this.income = income;

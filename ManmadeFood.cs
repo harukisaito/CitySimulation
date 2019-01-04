@@ -13,7 +13,7 @@ namespace CitySimulation{
         /// <param name="healthiness">Pass how bad the food is as int. (0-5)</param>
         /// <param name="cost">Pass the cost of the food as int.</param>
         /// </summary>
-        public ManmadeFood(string name, int energy, int taste, int healthiness, int cost, double time):base(name, energy, taste, healthiness, cost, time)
+        public ManmadeFood(string name, int energy, int taste, int healthiness, int cost, float time):base(name, energy, taste, healthiness, cost, time)
         {
             this.name = name;
             this.energy = energy;

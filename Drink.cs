@@ -24,7 +24,7 @@ namespace CitySimulation{
         /// <param name="cost">Pass the cost of the drink as int.</param>
         /// <param name="alcohol">Pass the presence of alcohol as bool.</param>
         /// </summary>        
-        public Drink(string name, int energy, int taste, int healthiness, int cost, bool alcohol, double time):base(name, energy, taste, healthiness, cost, time)
+        public Drink(string name, int energy, int taste, int healthiness, int cost, bool alcohol, float time):base(name, energy, taste, healthiness, cost, time)
         {
             this.name = name;
             this.energy = energy;

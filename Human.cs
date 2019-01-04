@@ -12,19 +12,13 @@ namespace CitySimulation
     {
         public Debt debt = new Debt();
         public List<Pet> pets = new List<Pet>();
-        private KarmaKonto karmaKonto;
+        public KarmaKonto karmaKonto;
         private Random random = new Random();
         private string name;
         private int money;
         private int competence;
         private float loanAmount;
         private int regularCounter;
-        public KarmaKonto KarmaKonto
-        {
-            get {return karmaKonto;}
-            set {karmaKonto = value;}
-        }
-        
 
         public string Name
         {
@@ -64,32 +58,12 @@ namespace CitySimulation
         /// <param name="karmaKonto"></param>
         /// <param name="competence">Pass the competence of a human as int.</param>
         /// </summary>
-        public Human(string name, int money, int age, int height, int weight, int energy, string gender, int fitness, int happiness, KarmaKonto karmaKonto, int competence, int health):base(age, height, weight, energy, gender, fitness, happiness, health)
+        public Human(string id, string name, int money, int age, int height, int weight, int energy, string gender, int fitness, int happiness, KarmaKonto karmaKonto, int competence, int health):base(id, age, height, weight, energy, gender, fitness, happiness, health)
         {
             this.name = name;
             this.money = money;
-            this.age = age;
-            this.height = height;
-            this.weight = weight;
-            this.energy = energy;
-            this.gender = gender;
-            this.fitness = fitness;
-            this.happiness = happiness;
             this.karmaKonto = karmaKonto;
             this.competence = competence;
-            this.health = health;
-        }
-
-        public void Describe()
-        {
-            Console.WriteLine("\nName: " + name + "\nFinancial status: " + money + "$" + "\nAge: " + age + "\nHeight: " + height + "\nWeight: " + weight + "\nEnergy level: " + energy + "\nSex: " + gender + "\nFitness level: " + fitness + "\nHappiness level: " + happiness + "\nCompetence: " + competence + "\n");
-            PrintKarmaPoints();
-            PrintPetList();
-        }
-
-        public void OutputName()
-        {
-            Console.WriteLine("Name: " + name);
         }
 
         public override string ToString()
@@ -97,11 +71,6 @@ namespace CitySimulation
             return "\nName: " + name + "\nFinancial status: " + money + "$" + "\nAge: " + age + "\nHeight: " + height 
             + "\nWeight: " + weight + "\nEnergy level: " + energy + "\nSex: " + gender + "\nFitness level: " + fitness 
             + "\nHappiness level: " + happiness + "\nCompetence: " + competence + "\n" + karmaKonto + "\n" + PrintPetList();
-        }
-
-        private void PrintKarmaPoints()
-        {
-            karmaKonto.Describe();
         }
 
         private string PrintPetList()
@@ -407,7 +376,6 @@ namespace CitySimulation
                 money -= food.Cost;
                 Console.WriteLine(name + " fed " + pet.Name + "\n" + name + " pet is a lot happier and rounder!");
                 FinancialStatus();
-                pet.Describe();
             }
         }
 
@@ -426,7 +394,6 @@ namespace CitySimulation
             happiness += pet.Energy;
             pet.Energy -= happiness/4;
             HealthStatus();
-            pet.Describe();
             Game.GameInstance.GetRealisticWorld().ChooseMethod();
         }
 
@@ -440,7 +407,6 @@ namespace CitySimulation
             }
             Console.WriteLine("\nSelect one of the pets from [1] to [" + pets.Count + "]\n");
             int selectPet = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value)-1;
-            pets[selectPet].Describe();
             return pets[selectPet];
         }
 
@@ -496,7 +462,6 @@ namespace CitySimulation
             {
                 money -= 1000;
                 Console.WriteLine("The surgery was succesful. " + name + " has officially moved to the other side. (gender wise)");
-                Game.GameInstance.GetHuman().ToString();
                 Game.GameInstance.GetRealisticWorld().ChooseMethod();
             }
         }
@@ -510,8 +475,9 @@ namespace CitySimulation
             {
                 DecideForEntertainment();
             }
-            Console.WriteLine("You went " + Game.GameInstance.Deserialize("exercises", Game.GameInstance.GetRealisticWorld().exercises)[choiceExercise].Name);
-            Exercise(Game.GameInstance.GetRealisticWorld().exercises[choiceExercise]);
+            Exercise[] exercises = Game.GameInstance.Deserialize("exercises", Game.GameInstance.GetRealisticWorld().exercises);
+            Console.WriteLine("You went " + exercises[choiceExercise].Name);
+            Exercise(exercises[choiceExercise]);
         }
 
         private void Exercise(Exercise exercise)
@@ -569,7 +535,7 @@ namespace CitySimulation
                 money += work.Income;
                 Console.WriteLine("The hard work has been rewarded with " + work.Income + "$");
                 FinancialStatus();
-                Game.GameInstance.GetRealisticWorld().CompleteTask(2);
+                //Game.GameInstance.GetRealisticWorld().CompleteTask(2);
                 if(energy <= 5)
                 {
                     RegenerateEnergy();
@@ -727,8 +693,13 @@ namespace CitySimulation
 
         private void AddCatToHuman()
         {
-            Cat cat = new Cat("", random.Next(1,10), random.Next(1,10), random.Next(1,3), random.Next(30,50), random.Next(5,10), 10, Game.GameInstance.Deserialize("genderList", Game.GameInstance.GetRealisticWorld().genderList)[random.Next(0, Game.GameInstance.GetRealisticWorld().genderList.Length)], random.Next(1,10), 10, Game.GameInstance.GetHuman(), 10);
-            Game.GameInstance.GetHuman().pets.Add(cat);
+            string[] tempGenderList = Game.GameInstance.Deserialize("genderList");
+            Game.GameInstance.GetRealisticWorld().genderList = tempGenderList;
+
+            Console.WriteLine("GENDERLIST SIZE= " + Game.GameInstance.GetRealisticWorld().genderList.Length);
+            Console.WriteLine("CURRENT HUMAN= " + Game.GameInstance.GetHuman());
+            Cat cat = new Cat("", "", random.Next(1,10), random.Next(1,10), random.Next(1,3), random.Next(30,50), random.Next(5,10), 10, tempGenderList[random.Next(0, tempGenderList.Length-1)], random.Next(1,10), 10, Game.GameInstance.GetHuman().Id, 10);
+            pets.Add(cat);
             NamePet(cat);
             //Game.GameInstance.realisticWorld.CompleteTask(1);
             //RealisticWorld.CompleteTask(4);
@@ -737,8 +708,11 @@ namespace CitySimulation
 
         private void AddDogToHuman()
         {
-            Dog dog = new Dog ("", random.Next(5,10), random.Next(1,10), random.Next(1,3), random.Next(30,100), random.Next(5,30), 10, Game.GameInstance.Deserialize("genderList", Game.GameInstance.GetRealisticWorld().genderList)[random.Next(0, Game.GameInstance.GetRealisticWorld().genderList.Length)], random.Next(1,10), 10, Game.GameInstance.GetHuman(), 10);
-            Game.GameInstance.GetHuman().pets.Add(dog);
+            string[] tempGenderList = Game.GameInstance.Deserialize("genderList");
+            Game.GameInstance.GetRealisticWorld().genderList = tempGenderList;
+
+            Dog dog = new Dog ("", "", random.Next(5,10), random.Next(1,10), random.Next(1,3), random.Next(30,100), random.Next(5,30), 10, tempGenderList[random.Next(0, tempGenderList.Length-1)], random.Next(1,10), 10, Game.GameInstance.GetHuman().Id, 10);
+            pets.Add(dog);
             NamePet(dog);
             // RealisticWorld.CompleteTask(4);
             // RealisticWorld.CompleteTask(1);
@@ -751,7 +725,7 @@ namespace CitySimulation
             int choicePet = InputForAdoptPet();
             if(choicePet == 1)
             {
-                KarmaKonto.GainKarma(1);
+                karmaKonto.GainKarma(1);
                 int choiceCatDog = InputForDecidePet();
                 if(choiceCatDog == 1)
                 {
@@ -765,7 +739,7 @@ namespace CitySimulation
             else
             {
                 int adoptionCounter = 0;
-                KarmaKonto.LoseKarmaPoints(1);
+                karmaKonto.LoseKarmaPoints(1);
                 if(adoptionCounter == 0)
                 {
                     Console.WriteLine("Are you sure? I will ask you again.");
@@ -800,23 +774,23 @@ namespace CitySimulation
         public void RescuePet(Pet petToRescue)
         {
             Game.GameInstance.GetRealisticWorld().CurrentTime += 2;
-            Game.GameInstance.GetHuman().KarmaKonto.GainKarma(5);
+            karmaKonto.GainKarma(5);
             float randomChanceForOwning = random.Next(0, 100)/100.0f;
             if(randomChanceForOwning < 0.5f)
             {
-                petToRescue.Owner = Game.GameInstance.GetRealisticWorld().currentPlayedHuman;
-                Console.WriteLine("\n" + Game.GameInstance.GetHuman().Name + " has rescued an animal from a tree and adopted it.");
-                Game.GameInstance.GetHuman().pets.Add(petToRescue);
+                petToRescue.Owner = Game.GameInstance.GetRealisticWorld().currentPlayedHuman.Name;
+                Console.WriteLine("\n" + name + " has rescued an animal from a tree and adopted it.");
+                pets.Add(petToRescue);
                 NamePet(petToRescue);
-                Game.GameInstance.GetHuman().PrintPetList();
+                PrintPetList();
             }
             else
             {
-                petToRescue.Owner = Game.GameInstance.Deserialize("owners", Game.GameInstance.GetRealisticWorld().owners)[random.Next(0,4)];
-                Console.WriteLine(Game.GameInstance.GetHuman().Name + " has rescued an animal but it already has an owner called: \"" + petToRescue.Owner.Name + "\"");
-                Console.WriteLine(petToRescue.Owner.Name + " is so grateful and invites you to a coffee!");
+                petToRescue.Owner = Game.GameInstance.Deserialize("owners", Game.GameInstance.GetRealisticWorld().owners)[random.Next(0,4)].Name;
+                Console.WriteLine(name + " has rescued an animal but it already has an owner called: \"" + petToRescue.Owner + "\"");
+                Console.WriteLine(petToRescue.Owner + " is so grateful and invites you to a coffee!");
                 Console.WriteLine("Slurrrrp! mhhhhhaaaaa...");
-                Game.GameInstance.GetHuman().Drink(Game.GameInstance.GetRealisticWorld().freeCoffee);
+                Drink(Game.GameInstance.GetRealisticWorld().freeCoffee);
             }
         }
 
@@ -878,7 +852,6 @@ namespace CitySimulation
             }
             else 
             {
-                Console.WriteLine("AFTER= " + debt.TempDay);
                 float interest = loanAmount /= 10;
                 loanAmount *= 10;
                 for(int i = debt.TempDay ; debt.TempDay <= Game.GameInstance.GetRealisticWorld().Day; debt.TempDay++)
@@ -888,7 +861,7 @@ namespace CitySimulation
             }
         }
 
-        public void GetSick()
+        public void GetSick(object source, EventArgs args)
         {
             if(health <= 0)
             {
@@ -930,7 +903,7 @@ namespace CitySimulation
             
         }
 
-        public void GetHungry()
+        public void GetHungry(object source, EventArgs args)
         {
             for(int i = 5; i <= Game.GameInstance.GetRealisticWorld().CurrentTime; i += 5)
             {
@@ -938,90 +911,95 @@ namespace CitySimulation
             }
         }
 
+        public void Die(object source, EventArgs args)
+        {
+            if(energy <= -5 && health <= 0)
+            {
+                Game.GameInstance.GetRealisticWorld().humans.Remove(Game.GameInstance.GetRealisticWorld().currentPlayedHuman);
+                Console.WriteLine(name + " has died. RIP");
+                // WHAT HAPPENS TO PET?
+                // REASON OF DEATH?
+                // WHAT HAPPENS AFTER THIS PLAY WITH OTHER HUMANS?? IF NO HUMANS EXISTS??
+            }
+        }
+
+        private void DisplaySquare(int value)
+        {
+            for(int i = 0; i < value; i++)
+            {
+                Console.Write("█");
+            }
+        }
+
+        private void IfStatement(int value)
+        {
+            if(value >= 0)
+            {
+                DisplayStar(value);
+            }
+            else
+            {
+                DisplayStar();
+            }
+        }
+        private void DisplayStar(int value)
+        {
+            for(int i = value; i < 30; i++)
+            {
+                Console.Write("◆");
+            }
+        }
+
+        private void DisplayStar()
+        {
+            for(int i = 0; i < 30; i++)
+            {
+                Console.Write("◆");
+            }
+        }
+
+        private void DisplayStats(int value)
+        {
+            DisplaySquare(value);
+            IfStatement(value);
+        }
+
         public void PetStatus()
         {
             Console.WriteLine("\n" + name + "'s pets:");
-            foreach(Pet p in Game.GameInstance.GetHuman().pets)
+            foreach(Pet p in pets)
             {
-                Console.WriteLine(p.Name);
                 Console.Write("\nEnergy:     ");
-                for(int i = 0; i < p.Energy; i++)
-                {
-                    Console.Write("█");
-                }
-                for(int i = p.Energy; i < 30; i++)
-                {
-                    Console.Write("◆");
-                }
+                DisplayStats(p.Energy);
                 Console.Write("\nHealth:     ");
-                for(int i = 0; i < p.Health; i++)
-                {
-                    Console.Write("█");
-                }
-                for(int i = p.Health; i < 30; i++)
-                {
-                    Console.Write("◆");
-                }
+                DisplayStats(p.Health);
                 Console.Write("\nHappiness:  ");
-                for(int i = 0; i < p.Happiness; i++)
-                {
-                    Console.Write("█");
-                }
-                for(int i = p.Happiness; i < 30; i++)
-                {
-                    Console.Write("◆");
-                }
-                Console.WriteLine("\n\nWeight:     " + p.Weight + "kg\n");
+                DisplayStats(p.Happiness);
+                Console.WriteLine("");
+                Console.WriteLine("\nWeight:     " + p.Weight + "kg");
             }
         } 
 
-        public void AllStatus()
+        public void AllStatus(object source, EventArgs args)
         {
             FinancialStatus();
             HealthStatus();
             CompetenceStatus();
+            PetStatus();
         }
 
         public void HealthStatus()
         {
             Console.Write("\nEnergy:     ");
-            for(int i = 0; i < energy; i++)
-            {
-                Console.Write("█");
-            }
-            for(int i = energy; i < 30; i++)
-            {
-                Console.Write("◆");
-            }
+            DisplayStats(energy);
             Console.Write("\nHealth:     ");
-            for(int i = 0; i < health; i++)
-            {
-                Console.Write("█");
-            }
-            for(int i = health; i < 30; i++)
-            {
-                Console.Write("◆");
-            }
+            DisplayStats(health);
             Console.Write("\nHappiness:  ");
-            for(int i = 0; i < happiness; i++)
-            {
-                Console.Write("█");
-            }
-            for(int i = happiness; i < 30; i++)
-            {
-                Console.Write("◆");
-            }
+            DisplayStats(happiness);
             Console.WriteLine("");
             Console.WriteLine("\nWeight:     " + weight + "kg");
             Console.Write("Fitness:    ");
-            for(int i = 0; i < fitness; i++)
-            {
-                Console.Write("█");
-            }
-            for(int i = fitness; i < 30; i++)
-            {
-                Console.Write("◆");
-            }
+            DisplayStats(fitness);
             Console.WriteLine("");
         }
 
@@ -1034,14 +1012,8 @@ namespace CitySimulation
         public void CompetenceStatus()
         {
             Console.Write("\nCompetence: ");
-            for(int i = 0; i < competence; i++)
-            {
-                Console.Write("█");
-            }
-            for(int i = competence; i < 30; i++)
-            {
-                Console.Write("◆");
-            }
+            DisplaySquare(competence);
+            DisplayStar(competence);
             Console.WriteLine("");
         }
     }

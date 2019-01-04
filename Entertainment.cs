@@ -14,7 +14,7 @@ namespace CitySimulation{
         private int cost;
         private int happiness;
         private bool social;
-        private double time;
+        private float time;
 
         public int Cost
         {
@@ -34,7 +34,7 @@ namespace CitySimulation{
             set {social = value;}
         }
 
-        public double Time
+        public float Time
         {
             get {return time;}
             set {time = value;}
@@ -46,7 +46,7 @@ namespace CitySimulation{
         /// <param name="cost">Pass the cost of the activity as int.</param>
         /// <param name="happiness">Pass the happiness gained from the activity as int.</param>
         /// <param name="social">Pass the social aspect of the activity as bool.</param>
-        public Entertainment(int cost, int happiness, bool social, double time) 
+        public Entertainment(int cost, int happiness, bool social, float time) 
         {
             this.cost = cost;
             this.happiness = happiness;

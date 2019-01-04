@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace CitySimulation
 {
-    class WeirdWorld : Universe
+    class WeirdWorld : World
     {
         [JsonIgnore]
         public Food[] pizzaFoods = new Food[]
@@ -37,6 +37,7 @@ namespace CitySimulation
 
         public List<Pizza> pizzas = new List<Pizza>();
         public static Game game = Game.Instance();
+        private Random random = new Random();
 
         public WeirdWorld(int id, string name) : base(id, name)
         {
@@ -75,16 +76,16 @@ namespace CitySimulation
             Console.WriteLine("\nLet's create your first own pizza!");
             CreatePizza();
             DisplayPizzaAscii();
-            int idchoice = Game.GameInstance.ChooseFromList<Pizza>("pizzas", pizzas);
+            // int idchoice = Game.GameInstance.ChooseFromList<Pizza>("pizzas", pizzas);
             Console.WriteLine("\nNow that you created your first pizza, adopt a human.");
-            pizzas[idchoice].AdoptingHuman(pizzas[idchoice], pizzas);
+            // pizzas[idchoice].AdoptingHuman(pizzas[idchoice], pizzas);
         }
 
         public void Continue()
         {
             Console.WriteLine("\nStart the Simulation inside a Simulation inside a simulation...");
             Console.WriteLine("\nPress [1] to create a new pizza\nPress [2] to play with your exisiting pizzas");
-            int idchoice = Game.GameInstance.ChooseFromList<Pizza>("pizzas", pizzas);
+            // int idchoice = Game.GameInstance.ChooseFromList<Pizza>("pizzas", pizzas);
         }
 
 
@@ -162,7 +163,7 @@ namespace CitySimulation
                         if(luck > 80)
                         {
                             // Deserialize();
-                            pizza.RescueHuman(new Human(Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld.nameList[random.Next(0,9)], 0, 1, 30, 5, 10, Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld.genderList[random.Next(0,1)], 10, 10, new KarmaKonto(0), 0, 10), pizza);
+                            //pizza.RescueHuman(new Human(Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld.nameList[random.Next(0,9)], 0, 1, 30, 5, 10, Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld.genderList[random.Next(0,1)], 10, 10, new KarmaKonto(0), 0, 10), pizza);
                         } 
                         pizza.InputWork(pizza, pizzas);
 

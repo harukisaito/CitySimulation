@@ -15,7 +15,7 @@ namespace CitySimulation{
             set {cost = value;}
         }
         
-        public Gym(string name, int cost, int energy, int fitness, int dopamine, double time):base(name, energy, fitness, dopamine, time)
+        public Gym(string name, int cost, int energy, int fitness, int dopamine, float time):base(name, energy, fitness, dopamine, time)
         {
             this.cost = cost;
             this.energy = energy;

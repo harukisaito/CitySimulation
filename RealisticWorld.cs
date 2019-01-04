@@ -8,58 +8,59 @@ using Newtonsoft.Json;
 
 namespace CitySimulation
 {
-    class RealisticWorld : Universe
+    class RealisticWorld : World
     {
         [JsonIgnore]
-        public Human[] owners = new Human[]
-        {  
-        };
+        public Human[] owners = new Human[] { };
+
         [JsonIgnore]
-        public Food[] cookedFoods = new Food[]
-        {
-        };
+        public Food[] cookedFoods = new Food[] {};
+
         [JsonIgnore]
-        public Food[] foods = new Food[]
-        {
-        };
+        public Food[] foods = new Food[] {};
+        
         [JsonIgnore]
-        public PetFood[] petFoods = new PetFood[]
-        {
-        };
+        public PetFood[] petFoods = new PetFood[] {};
+        
         [JsonIgnore]
         public Drink freeCoffee = new Drink("Coffee", 2, 5, 1, 0, false, 0);
         [JsonIgnore]
-        public Drink[] drinks = new Drink[]
-        {
-        };
+        public Drink[] drinks = new Drink[] {};
+        
         [JsonIgnore]
-        public Exercise[] exercises = new Exercise[]
-        {
-        };
+        public Exercise[] exercises = new Exercise[] {};
+        
         [JsonIgnore]
-        public Work[] works = new Work[]
-        {
-        };
+        public Work[] works = new Work[] {};
+        
         [JsonIgnore]
-        public Entertainment[] entertainments = new Entertainment[]
-        {
-        };
+        public Entertainment[] entertainments = new Entertainment[] {};
+        
         [JsonIgnore]
-        public string[] nameList = new string[]
-        {
-        };
+        public string[] nameList = new string[] {};
+        
         [JsonIgnore]
-        public string[] genderList = new string[]
-        {
-        };
+        public string[] genderList = new string[] {};
+        
         private static string gender;
         public List<Human> humans = new List<Human>();
         public List<Task> tasks = new List<Task>();
         [JsonIgnore]
         public Human currentPlayedHuman;
-        private static Game game = Game.Instance();
+        private Random random = new Random();
+
+        public event EventHandler CheckEverything;
+
         public RealisticWorld(int id, string name) : base(id, name)
         {
+        }
+
+        protected virtual void OnCheckEverything()
+        {
+            if(CheckEverything != null)
+            {
+                CheckEverything(this, EventArgs.Empty);
+            }
         }
 
         public void CompleteTask(int id)
@@ -70,10 +71,6 @@ namespace CitySimulation
                 Console.WriteLine(tasks[id].Name + tasks[id].Content);
                 tasks[id].Completed = true;
             }
-            Console.WriteLine(tasks[id].Id);
-            Console.WriteLine(tasks[tasks[id].Id].Completed);
-            Console.WriteLine(CheckConditions(id));
-            Console.WriteLine("LENGTH= " + tasks[id].Conditions.Length);
             //Game.GameInstance.Serialize<Task>("tasks", tasks);
         }
 
@@ -102,16 +99,22 @@ namespace CitySimulation
             Game.GameInstance.ResetTask();
             Console.WriteLine("\nStart the Simulation inside a Simulation inside a simulation...");
             Console.WriteLine("Let's create your human!\n\nPress [1] to create your own human\nPress [2] for a random human");
-            int choiceHuman = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            ChooseHuman(choiceHuman);
+            ChooseHuman(int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value));
         }
 
         public void Continue()
         {
             Console.WriteLine("\nStart the Simulation inside a Simulation inside a simulation...");
             Console.WriteLine("\nAdd a Human to your world?\n\nPress [1] to create your own human\nPress [2] for a random human\nPress [3] to keep playing with your existing humans");
-            int choiceHuman = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            ChooseHuman(choiceHuman);
+            ChooseHuman(int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value));
+        }
+
+        private void SubscribeToPublisher()
+        {
+            Game.GameInstance.GetRealisticWorld().CheckEverything += Game.GameInstance.GetHuman().Die;
+            Game.GameInstance.GetRealisticWorld().CheckEverything += Game.GameInstance.GetHuman().AllStatus;
+            Game.GameInstance.GetRealisticWorld().CheckEverything += Game.GameInstance.GetHuman().GetHungry;
+            Game.GameInstance.GetRealisticWorld().CheckEverything += Game.GameInstance.GetHuman().GetSick;
         }
 
         private void ChooseHuman(int choiceHuman)
@@ -122,27 +125,11 @@ namespace CitySimulation
                     GiveNameGender();
                     break;
                 case 2:
-                    bool empty = Game.GameInstance.CheckJson("universes");
-                    Console.WriteLine(empty);
-                    if(empty == false)
-                    {
-                        Game.GameInstance.Deserialize("universes", Game.GameInstance.universes);
-                        CompleteTask(3);
-                    }
-                    nameList = Game.GameInstance.Deserialize("nameList", nameList);
-                    genderList = Game.GameInstance.Deserialize("genderList", genderList);
-                    currentPlayedHuman = new Human(nameList[random.Next(0, nameList.Length)], random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, genderList[random.Next(0, genderList.Length)],  10, 10, new KarmaKonto(0), 1, 10);
-                    humans.Add(currentPlayedHuman);
-                    foreach(Human h in Game.GameInstance.GetRealisticWorld().humans)
-                    {
-                        Console.WriteLine(h.Name);
-                        h.HealthStatus();
-                    }
-                    CompleteTask(0);
-                    currentPlayedHuman.AdoptPet();
+                    CreateRandomHuman();
                     break;
                 case 3:
                     currentPlayedHuman = humans[Game.GameInstance.ChooseFromHumanList()];
+                    SubscribeToPublisher();
                     ChooseMethod();
                     break;
             }
@@ -162,31 +149,63 @@ namespace CitySimulation
             {
                 gender = "female";
             }
-            CreateHuman(name, gender);
+            CreateOwnHuman(name, gender);
         }
 
-        private void CreateHuman(string name, string gender) 
+        private void CreateOwnHuman(string name, string gender) 
         {
             bool empty = Game.GameInstance.CheckJson("humans");
             if(empty == false)
             {
-                Game.GameInstance.Deserialize("universes", Game.GameInstance.universes);
-                CompleteTask(3);
+                humans = Game.GameInstance.Deserialize("humans", new List<Human>());
+                //CompleteTask(3);
             }
-            currentPlayedHuman = new Human(name, random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, gender, 10, 10, new KarmaKonto(0), 1, 10);
+            currentPlayedHuman = new Human("", name, random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, gender, 10, 10, new KarmaKonto(0), 1, 10);
             humans.Add(currentPlayedHuman);
-            CompleteTask(0);
+            // Game.GameInstance.Serialize("universes");
+            SubscribeToPublisher();
+            //CompleteTask(0);
+            currentPlayedHuman.AdoptPet();
+        }
+
+        private void CreateRandomHuman()
+        {
+            bool empty = Game.GameInstance.CheckJson("universes");
+            Console.WriteLine(empty);
+            // if(empty == false)
+            // {
+            //     humans = Game.GameInstance.Deserialize("humans", new List<Human>());
+            //     // Game.GameInstance.Deserialize("universes", Game.GameInstance.universes);
+            //     Console.WriteLine("HAAAAYYYYYAAAA");
+            //     //CompleteTask(3);
+            // }
+            nameList = Game.GameInstance.Deserialize("nameList");
+            genderList = Game.GameInstance.Deserialize("genderList");
+            currentPlayedHuman = new Human("", nameList[random.Next(0, nameList.Length-1)], random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, genderList[random.Next(0, genderList.Length-1)],  10, 10, new KarmaKonto(0), 1, 10);
+            Console.WriteLine("CURRENT HUMAN= " + currentPlayedHuman.ToString());
+            humans.Add(currentPlayedHuman);
+            // Game.GameInstance.Serialize("universes");
+            foreach (Human h in humans)
+            {
+                Console.WriteLine(h.ToString());
+            }
+            SubscribeToPublisher();
+            foreach(Human h in Game.GameInstance.GetRealisticWorld().humans)
+            {
+                Console.WriteLine(h.Name);
+                h.HealthStatus();
+            }
+            //CompleteTask(0);
             currentPlayedHuman.AdoptPet();
         }
 
         private void CheckSleep()
         {
-            if(currentTime >= 16 && currentTime <= 24)
+            if(CurrentTime >= 16 && CurrentTime <= 24)
             {
                 Console.WriteLine("Let " + currentPlayedHuman.Name + " sleep for now? 8 hours is the recommended time of sleep\n\nPress [1] for Yes\nPress [2] for No");
-                int sleepAnswer = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
                 CheckTime();
-                if(sleepAnswer == 1)
+                if(int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) == 1)
                 {
                     currentPlayedHuman.Sleep();
                 }
@@ -195,14 +214,14 @@ namespace CitySimulation
 
         private void CheckTime()
         {
-            if(currentTime >= 24)
+            if(CurrentTime >= 24)
             {
-                currentTime %= 24;
-                day++;
+                CurrentTime %= 24;
+                Day++;
             }
-            double temp = currentTime;
-            int hours = (int)currentTime;
-            double minutesdouble = currentTime %= 1;
+            float temp = CurrentTime;
+            int hours = (int)CurrentTime;
+            float minutesdouble = CurrentTime %= 1;
             minutesdouble *= 60;
             int minutes = (int)(minutesdouble + 0.5);
             if(hours <= 12)
@@ -215,8 +234,8 @@ namespace CitySimulation
                 DisplayTime(hours, minutes);
                 hours += 12;
             }
-            currentTime = temp;
-            Console.WriteLine("Day: " + day);
+            CurrentTime = temp;
+            Console.WriteLine("Day: " + Day);
         }
 
         private void DisplayTime(int hours, int minutes)
@@ -233,14 +252,13 @@ namespace CitySimulation
 
         public void ChooseMethod()
         {
-            Game.GameInstance.Serialize("universes");
+            //TODO: ADD WHAT HAPPENS WHEN KARMA IS TOO LOW.
+            // Game.GameInstance.Deserialize("universes", Game.GameInstance.universes);
+            // Game.GameInstance.Serialize("universes");
             CheckTime();
-            currentPlayedHuman.GetSick();
+            OnCheckEverything();
             CheckSleep();
-            currentPlayedHuman.GetHungry();
             currentPlayedHuman.DebtCounter(currentPlayedHuman.LoanAmount);
-            currentPlayedHuman.AllStatus();
-            currentPlayedHuman.PetStatus();
             Console.WriteLine("\nWhat do you want to do next?\nPress [1] to eat something\nPress [2] to Drink something\nPress [3] to rest\nPress [4] to go work\nPress [5] to exercise\nPress [6] to do something entertaining\nPress [7] to either feed your pet or play with it\nPress [8] adpot another pet\nPress [9] to improve your skills for a certain job\nPress [10] to sleep\nPress [11] to get a loan or pay the debt\nPress [12] to show the statistics of all humans\n\nPress [13] to quit");
             int choiceMethod = int.Parse(Regex.Match(Console.ReadLine(), @"\d+").Value);
             switch(choiceMethod)
@@ -258,7 +276,8 @@ namespace CitySimulation
                     int luck = random.Next(0,100);
                     if(luck > 80)
                     {
-                        currentPlayedHuman.RescuePet(new Cat("", 10, 10, 10, 10, 10, 10, Game.GameInstance.Deserialize("genderList", genderList)[random.Next(0, genderList.Length)], 10, 10, currentPlayedHuman, 10)); 
+                        genderList = Game.GameInstance.Deserialize("genderList");
+                        currentPlayedHuman.RescuePet(new Cat("", "", 10, 10, 10, 10, 10, 10, genderList[random.Next(0, genderList.Length-1)], 10, 10, currentPlayedHuman.Id, 10)); 
                     }
                     currentPlayedHuman.InputForWork();
                     break;
@@ -288,7 +307,7 @@ namespace CitySimulation
                     ChooseMethod();
                     break;
                 case 13: 
-                    game.Quit();
+                    Game.GameInstance.Quit();
                     break;
             }
         }

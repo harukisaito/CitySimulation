@@ -100,7 +100,7 @@ namespace CitySimulation{
 
         public void AdoptingHuman(Pizza pizza, List<Pizza> pizzas)
         {
-            pizza.pizzaHumans.Add(new Human(NamingHuman(), 0, 1, 50, 20, 10, "male", 0, 10, new KarmaKonto(0), 0, 10));
+            //pizza.pizzaHumans.Add(new Human(NamingHuman(), 0, 1, 50, 20, 10, "male", 0, 10, new KarmaKonto(0), 0, 10, Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld);
             pizza.Describe();
             DisplayHumanAscii();
             InputWork(pizza, pizzas);
@@ -255,7 +255,7 @@ namespace CitySimulation{
                 foreach(Human human in pizzaHumans)
                 {
                     Console.WriteLine("\nList of adopted Humans\n" + counter);
-                    human.OutputName();
+                    Console.WriteLine(human.Name);
                     counter++;
                 }
             }

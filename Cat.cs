@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CitySimulation{
+namespace CitySimulation
+{
     class Cat : Pet 
     {
         /// <summary>    
@@ -19,7 +20,7 @@ namespace CitySimulation{
         /// <param name="fitness">Pass the fitness level of the cat as int.</param>
         /// <param name="happiness"> Pass the happiness level of the cat as int.</param>
         /// </summary>
-        public Cat(string name, int loyalty, int cuteness, int age, int height, int weight, int energy, string gender, int fitness, int happiness, Human owner, int health):base(name, loyalty, cuteness, age,height,weight,energy,gender,fitness,happiness,owner, health)
+        public Cat(string id, string name, int loyalty, int cuteness, int age, int height, int weight, int energy, string gender, int fitness, int happiness, string owner, int health):base(id, name, loyalty, cuteness, age,height,weight,energy,gender,fitness,happiness,owner, health)
         {
         }
 

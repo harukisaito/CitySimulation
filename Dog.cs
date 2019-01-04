@@ -23,7 +23,7 @@ namespace CitySimulation
         /// <param name="happiness">Pass the happiness of the dog as int.</param>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public Dog(string name, int loyalty, int cuteness, int age, int height, int weight, int energy, string gender, int fitness, int happiness, Human owner, int health):base(name, loyalty, cuteness, age, height, weight, energy, gender, fitness, happiness, owner, health) 
+        public Dog(string id, string name, int loyalty, int cuteness, int age, int height, int weight, int energy, string gender, int fitness, int happiness, string owner, int health):base(id, name, loyalty, cuteness, age, height, weight, energy, gender, fitness, happiness, owner, health) 
         {
         }
     }

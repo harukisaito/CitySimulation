@@ -33,10 +33,6 @@ public class KarmaKonto
         KarmaPoints -= pointsToLose;
     }
 
-    public void Describe()
-    {
-        Console.WriteLine("Karma: " + karmaPoints + "\n");
-    }
 
     public override string ToString()
     {
