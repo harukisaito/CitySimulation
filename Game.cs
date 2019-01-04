@@ -59,15 +59,13 @@ namespace CitySimulation
             universes = Deserialize("universes", universes);
             currentPlayedUniverse = new Universe(Numerate(), NameUniverse());
             universes.Add(currentPlayedUniverse);
-            // Serialize<Universe>("universes", universes);
             // Serialize("universes");
             currentPlayedUniverse.ChooseWorld();
         }
 
         public void LoadGame()
         {
-            universes = Deserialize("universes", universes);
-            currentPlayedUniverse = universes[ChooseFromUniverseList()];
+            currentPlayedUniverse = Deserialize("universes", universes)[ChooseFromUniverseList()];
             currentPlayedUniverse.ChooseWorldContinue();
         }
 
@@ -297,14 +295,12 @@ namespace CitySimulation
         public List<Human> Deserialize(string certainPath, List<Human> humans)
         {
             Console.WriteLine("DESERIALIZING");
-            // Console.WriteLine(readJson);
             return JsonConvert.DeserializeObject<List<Human>>(ReadJson(PathCreator(certainPath)));
         }
 
         public List<Task> Deserialize(string certainPath, List<Task> tasks)
         {
             Console.WriteLine("DESERIALIZING");
-            // Console.WriteLine(ReadJson(path);
             return JsonConvert.DeserializeObject<List<Task>>(ReadJson(PathCreator(certainPath)));
         }
 
@@ -331,49 +327,41 @@ namespace CitySimulation
 
         public string[] Deserialize(string certainPath)
         {
-            // Console.WriteLine(readJson);
             return JsonConvert.DeserializeObject<string[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Food[] Deserialize(string certainPath, Food[] array)
         {
-            // Console.WriteLine(readJson);
             return JsonConvert.DeserializeObject<Food[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Drink[] Deserialize(string certainPath, Drink[] array)
         {
-            // Console.WriteLine(ReadJson(path));
             return JsonConvert.DeserializeObject<Drink[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Entertainment[] Deserialize(string certainPath, Entertainment[] array)
         {
-            // Console.WriteLine(ReadJson(path));
             return JsonConvert.DeserializeObject<Entertainment[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public PetFood[] Deserialize(string certainPath, PetFood[] array)
         {
-            // Console.WriteLine(ReadJson(path));
             return JsonConvert.DeserializeObject<PetFood[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Exercise[] Deserialize(string certainPath, Exercise[] array)
         {
-            // Console.WriteLine(ReadJson(path));
             return JsonConvert.DeserializeObject<Exercise[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Work[] Deserialize(string certainPath, Work[] array)
         {
-            // Console.WriteLine(ReadJson(path));
             return JsonConvert.DeserializeObject<Work[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Human[] Deserialize(string certainPath, Human[] array)
         {
-            // Console.WriteLine(ReadJson(path));
             return JsonConvert.DeserializeObject<Human[]>(ReadJson(PathCreator(certainPath)));
         }
     }

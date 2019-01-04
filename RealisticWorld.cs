@@ -154,12 +154,6 @@ namespace CitySimulation
 
         private void CreateOwnHuman(string name, string gender) 
         {
-            bool empty = Game.GameInstance.CheckJson("humans");
-            if(empty == false)
-            {
-                humans = Game.GameInstance.Deserialize("humans", new List<Human>());
-                //CompleteTask(3);
-            }
             currentPlayedHuman = new Human("", name, random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, gender, 10, 10, new KarmaKonto(0), 1, 10);
             humans.Add(currentPlayedHuman);
             // Game.GameInstance.Serialize("universes");
@@ -170,31 +164,14 @@ namespace CitySimulation
 
         private void CreateRandomHuman()
         {
-            bool empty = Game.GameInstance.CheckJson("universes");
-            Console.WriteLine(empty);
-            // if(empty == false)
-            // {
-            //     humans = Game.GameInstance.Deserialize("humans", new List<Human>());
-            //     // Game.GameInstance.Deserialize("universes", Game.GameInstance.universes);
-            //     Console.WriteLine("HAAAAYYYYYAAAA");
-            //     //CompleteTask(3);
-            // }
             nameList = Game.GameInstance.Deserialize("nameList");
             genderList = Game.GameInstance.Deserialize("genderList");
             currentPlayedHuman = new Human("", nameList[random.Next(0, nameList.Length-1)], random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, genderList[random.Next(0, genderList.Length-1)],  10, 10, new KarmaKonto(0), 1, 10);
-            Console.WriteLine("CURRENT HUMAN= " + currentPlayedHuman.ToString());
             humans.Add(currentPlayedHuman);
+            Console.WriteLine(currentPlayedHuman.Name);
+            currentPlayedHuman.HealthStatus();
             // Game.GameInstance.Serialize("universes");
-            foreach (Human h in humans)
-            {
-                Console.WriteLine(h.ToString());
-            }
             SubscribeToPublisher();
-            foreach(Human h in Game.GameInstance.GetRealisticWorld().humans)
-            {
-                Console.WriteLine(h.Name);
-                h.HealthStatus();
-            }
             //CompleteTask(0);
             currentPlayedHuman.AdoptPet();
         }
