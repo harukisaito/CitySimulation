@@ -168,7 +168,6 @@ namespace CitySimulation
             genderList = Game.GameInstance.Deserialize("genderList");
             currentPlayedHuman = new Human("", nameList[random.Next(0, nameList.Length-1)], random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, genderList[random.Next(0, genderList.Length-1)],  10, 10, new KarmaKonto(0), 1, 10);
             humans.Add(currentPlayedHuman);
-            Console.WriteLine(currentPlayedHuman.Name);
             currentPlayedHuman.HealthStatus();
             // Game.GameInstance.Serialize("universes");
             SubscribeToPublisher();

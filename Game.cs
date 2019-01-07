@@ -65,7 +65,8 @@ namespace CitySimulation
 
         public void LoadGame()
         {
-            currentPlayedUniverse = Deserialize("universes", universes)[ChooseFromUniverseList()];
+            universes = Deserialize("universes", universes);
+            currentPlayedUniverse = universes[ChooseFromUniverseList()];
             currentPlayedUniverse.ChooseWorldContinue();
         }
 

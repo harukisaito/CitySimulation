@@ -696,8 +696,6 @@ namespace CitySimulation
             string[] tempGenderList = Game.GameInstance.Deserialize("genderList");
             Game.GameInstance.GetRealisticWorld().genderList = tempGenderList;
 
-            Console.WriteLine("GENDERLIST SIZE= " + Game.GameInstance.GetRealisticWorld().genderList.Length);
-            Console.WriteLine("CURRENT HUMAN= " + Game.GameInstance.GetHuman());
             Cat cat = new Cat("", "", random.Next(1,10), random.Next(1,10), random.Next(1,3), random.Next(30,50), random.Next(5,10), 10, tempGenderList[random.Next(0, tempGenderList.Length-1)], random.Next(1,10), 10, Game.GameInstance.GetHuman().Id, 10);
             pets.Add(cat);
             NamePet(cat);
