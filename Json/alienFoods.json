@@ -1,0 +1,32 @@
+[
+    {
+        "Name": "Dust",
+        "Energy": 1,
+        "Salt": 1,
+        "Time": 0.2
+    },
+    {
+        "Name": "Wood",
+        "Energy": 3,
+        "Salt": 4,
+        "Time": 0.5
+    },
+    {
+        "Name": "Glass",
+        "Energy": 2,
+        "Salt": 3,
+        "Time": 0.7
+    },
+    {
+        "Name": "Plastic",
+        "Energy": 4,
+        "Salt": 6,
+        "Time": 0.9
+    },
+    {
+        "Name": "Rubber",
+        "Energy": 5,
+        "Salt": 10,
+        "Time": 0.8
+    }
+]

@@ -9,39 +9,7 @@ using Newtonsoft.Json;
 namespace CitySimulation
 {
     class RealisticWorld : World
-    {
-        [JsonIgnore]
-        public Human[] owners = new Human[] { };
-
-        [JsonIgnore]
-        public Food[] cookedFoods = new Food[] {};
-
-        [JsonIgnore]
-        public Food[] foods = new Food[] {};
-        
-        [JsonIgnore]
-        public PetFood[] petFoods = new PetFood[] {};
-        
-        [JsonIgnore]
-        public Drink freeCoffee = new Drink("Coffee", 2, 5, 1, 0, false, 0);
-        [JsonIgnore]
-        public Drink[] drinks = new Drink[] {};
-        
-        [JsonIgnore]
-        public Exercise[] exercises = new Exercise[] {};
-        
-        [JsonIgnore]
-        public Work[] works = new Work[] {};
-        
-        [JsonIgnore]
-        public Entertainment[] entertainments = new Entertainment[] {};
-        
-        [JsonIgnore]
-        public string[] nameList = new string[] {};
-        
-        [JsonIgnore]
-        public string[] genderList = new string[] {};
-        
+    {   
         private static string gender;
         public List<Human> humans = new List<Human>();
         public List<Task> tasks = new List<Task>();
@@ -128,7 +96,14 @@ namespace CitySimulation
                     CreateRandomHuman();
                     break;
                 case 3:
-                    currentPlayedHuman = humans[Game.GameInstance.ChooseFromHumanList()];
+                    if(humans.Count == 1)
+                    {
+                        currentPlayedHuman = humans[0];
+                    }
+                    else
+                    {
+                        currentPlayedHuman = humans[Game.GameInstance.ChooseFromHumanList()];
+                    }
                     SubscribeToPublisher();
                     ChooseMethod();
                     break;
@@ -154,7 +129,7 @@ namespace CitySimulation
 
         private void CreateOwnHuman(string name, string gender) 
         {
-            currentPlayedHuman = new Human("", name, random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, gender, 10, 10, new KarmaKonto(0), 1, 10);
+            currentPlayedHuman = new Human(Game.GameInstance.AssignId(), name, random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, gender, 10, 10, new KarmaKonto(0), 1, 10);
             humans.Add(currentPlayedHuman);
             // Game.GameInstance.Serialize("universes");
             SubscribeToPublisher();
@@ -166,7 +141,7 @@ namespace CitySimulation
         {
             nameList = Game.GameInstance.Deserialize("nameList");
             genderList = Game.GameInstance.Deserialize("genderList");
-            currentPlayedHuman = new Human("", nameList[random.Next(0, nameList.Length-1)], random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, genderList[random.Next(0, genderList.Length-1)],  10, 10, new KarmaKonto(0), 1, 10);
+            currentPlayedHuman = new Human(Game.GameInstance.AssignId(), nameList[random.Next(0, nameList.Length-1)], random.Next(10,30), random.Next(1,100), random.Next(50,200), random.Next(50,100), 10, genderList[random.Next(0, genderList.Length-1)],  10, 10, new KarmaKonto(0), 1, 10);
             humans.Add(currentPlayedHuman);
             currentPlayedHuman.HealthStatus();
             // Game.GameInstance.Serialize("universes");
@@ -253,7 +228,7 @@ namespace CitySimulation
                     if(luck > 80)
                     {
                         genderList = Game.GameInstance.Deserialize("genderList");
-                        currentPlayedHuman.RescuePet(new Cat("", "", 10, 10, 10, 10, 10, 10, genderList[random.Next(0, genderList.Length-1)], 10, 10, currentPlayedHuman.Id, 10)); 
+                        currentPlayedHuman.RescuePet(new Cat(Game.GameInstance.AssignId(), "", 10, 10, 10, 10, 10, 10, genderList[random.Next(0, genderList.Length-1)], 10, 10, currentPlayedHuman.Id, 10)); 
                     }
                     currentPlayedHuman.InputForWork();
                     break;

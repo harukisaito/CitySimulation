@@ -1,0 +1,51 @@
+[
+    {
+        "Name": "Screws",
+        "Copper": 0,
+        "Aluminum": 1,
+        "Steel": 3,
+        "Salt": 2,
+        "Time": 0.3
+    },
+    {
+        "Name": "Cable",
+        "Copper": 3,
+        "Aluminum": 0,
+        "Steel": 0,
+        "Salt": 2,
+        "Time": 0.3
+    },
+    {
+        "Name": "Car",
+        "Copper": 3,
+        "Aluminum": 5,
+        "Steel": 4,
+        "Salt": 15,
+        "Time": 3
+    },
+    {
+        "Name": "Telephone",
+        "Copper": 2,
+        "Aluminum": 2,
+        "Steel": 1,
+        "Salt": 5,
+        "Time": 1
+    },
+    {
+        "Name": "Phone",
+        "Copper": 3,
+        "Aluminum": 3,
+        "Steel": 2,
+        "Salt": 7,
+        "Time": 0.7
+    },
+    {
+        "Name": "Pizza",
+        "Copper": 0,
+        "Aluminum": 0,
+        "Steel": 0,
+        "Salt": 20,
+        "Time": 0.1
+    }
+
+]

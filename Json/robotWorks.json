@@ -1,0 +1,26 @@
+[
+    {
+        "Name": "Office",
+        "Salt": 50,
+        "Time": 8,
+        "Stress": 4,
+        "Difficulty": 1000,
+        "Competence": 5
+    },
+    {
+        "Name": "McDonalds",
+        "Salt": 20,
+        "Time": 6,
+        "Stress": 4,
+        "Difficulty": 10,
+        "Competence": 1
+    },
+    {
+        "Name": "Delivery",
+        "Salt": 25,
+        "Time": 4,
+        "Stress": 3,
+        "Difficulty": 100,
+        "Competence": 2
+    }
+]

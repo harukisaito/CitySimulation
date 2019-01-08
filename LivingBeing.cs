@@ -23,7 +23,7 @@ namespace CitySimulation
 
         public LivingBeing(string id, int age, int height, int weight, int energy, string gender, int fitness, int happiness, int health) 
         {
-            this.id = Guid.NewGuid().ToString();
+            this.id = id;
             this.age = age;
             this.height = height;
             this.weight = weight;

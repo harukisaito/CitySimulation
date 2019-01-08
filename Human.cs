@@ -96,8 +96,7 @@ namespace CitySimulation
         private void RegenerateEnergy()
         {
             Console.WriteLine("\nPress [1] to eat something\nPress [2] to drink something\nPress [3] to rest\n");
-            int choiceFood = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            switch(choiceFood)
+            switch(int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value))
             {
                 case 1: 
                     SelectAndEat();
@@ -128,13 +127,13 @@ namespace CitySimulation
             switch(howToEat)
             {
                 case 1:
-                    DisplayFoodList(Game.GameInstance.Deserialize("cookedFoods", Game.GameInstance.GetRealisticWorld().cookedFoods), howToEat);
+                    DisplayFoodList(Game.GameInstance.Deserialize("cookedFoods", Game.GameInstance.GetWorld().cookedFoods), howToEat);
                     break;
                 case 2:
-                    DisplayFoodList(Game.GameInstance.Deserialize("foods", Game.GameInstance.GetRealisticWorld().foods), howToEat);
+                    DisplayFoodList(Game.GameInstance.Deserialize("foods", Game.GameInstance.GetWorld().foods), howToEat);
                     break;
                 case 3:
-                    Game.GameInstance.GetRealisticWorld().foods = Game.GameInstance.Deserialize("foods", Game.GameInstance.GetRealisticWorld().foods);
+                    Game.GameInstance.GetWorld().foods = Game.GameInstance.Deserialize("foods", Game.GameInstance.GetWorld().foods);
                     SearchAndEat();
                     break;
             }
@@ -151,25 +150,24 @@ namespace CitySimulation
             }
             Console.WriteLine("\nChoose your preferred food item from [1] to [" + foods.Length + "]");
             FinancialStatus();
-            int selectFood = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value)-1;
-            Eat( foods[selectFood], cookOrEat);
+            Eat(foods[int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value)-1], cookOrEat);
         }
 
 
         public void SelectAndDrink()
         {   
-            Game.GameInstance.GetRealisticWorld().drinks = Game.GameInstance.Deserialize("drinks", Game.GameInstance.GetRealisticWorld().drinks);
+            Game.GameInstance.GetWorld().drinks = Game.GameInstance.Deserialize("drinks", Game.GameInstance.GetWorld().drinks);
             int counter = 1;
-            foreach (Drink drink in Game.GameInstance.GetRealisticWorld().drinks)
+            foreach (Drink drink in Game.GameInstance.GetWorld().drinks)
             {
                 Console.Write("\n[" + counter + "]  " + drink.Cost + "$  ");
                 Console.Write(drink.Name + "\n");
                 counter++;
             }
-            Console.WriteLine("\nChoose your preferred drink from [1] to [" + Game.GameInstance.GetRealisticWorld().drinks.Length + "]");
+            Console.WriteLine("\nChoose your preferred drink from [1] to [" + Game.GameInstance.GetWorld().drinks.Length + "]");
             FinancialStatus();
             int selectDrink = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            Drink( Game.GameInstance.GetRealisticWorld().drinks[selectDrink-1]);
+            Drink( Game.GameInstance.GetWorld().drinks[selectDrink-1]);
         }
 
         private void Drink(Drink drink) 
@@ -211,7 +209,7 @@ namespace CitySimulation
             string search = Console.ReadLine();
             search = search.ToLower();
             char[] slicedSearchWord = search.ToCharArray();
-            foreach(Food food in Game.GameInstance.GetRealisticWorld().foods)
+            foreach(Food food in Game.GameInstance.GetWorld().foods)
             {
                 food.Name = food.Name.ToLower();
                 if(food.Name == search)
@@ -311,7 +309,7 @@ namespace CitySimulation
             }
             else
             {
-                Entertain(Game.GameInstance.Deserialize("entertainments", Game.GameInstance.GetRealisticWorld().entertainments)[choiceEntertainment]);
+                Entertain(Game.GameInstance.Deserialize("entertainments", Game.GameInstance.GetWorld().entertainments)[choiceEntertainment]);
             }
         }
 
@@ -344,8 +342,7 @@ namespace CitySimulation
 
         public void ActivityWithPet()
         {
-            int choiceActivityPet = InputForActivityWithPet();
-            switch(choiceActivityPet)
+            switch(InputForActivityWithPet())
             {
                 case 1: 
                     FeedPet(SelectPet(), SelectPetFood());
@@ -412,18 +409,18 @@ namespace CitySimulation
 
         private PetFood SelectPetFood()
         {
-            Game.GameInstance.GetRealisticWorld().petFoods = Game.GameInstance.Deserialize("petFoods", Game.GameInstance.GetRealisticWorld().petFoods);
+            Game.GameInstance.GetWorld().petFoods = Game.GameInstance.Deserialize("petFoods", Game.GameInstance.GetWorld().petFoods);
             int counter = 1;
-            foreach(Food petFood in Game.GameInstance.GetRealisticWorld().petFoods)
+            foreach(Food petFood in Game.GameInstance.GetWorld().petFoods)
             {
                 Console.Write("\n[" + counter + "]  " + petFood.Cost + "$  ");
                 Console.Write(petFood.Name + "\n");
                 counter++;
             }
-            Console.WriteLine("\nSelect one of the pet food items from [1] to [" + Game.GameInstance.GetRealisticWorld().petFoods.Length + "]\n");
+            Console.WriteLine("\nSelect one of the pet food items from [1] to [" + Game.GameInstance.GetWorld().petFoods.Length + "]\n");
             int selectPetFood = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value)-1;
             FinancialStatus();
-            return Game.GameInstance.GetRealisticWorld().petFoods[selectPetFood];
+            return Game.GameInstance.GetWorld().petFoods[selectPetFood];
         }
 
         private int InputForDecideForSexChange()
@@ -475,7 +472,7 @@ namespace CitySimulation
             {
                 DecideForEntertainment();
             }
-            Exercise[] exercises = Game.GameInstance.Deserialize("exercises", Game.GameInstance.GetRealisticWorld().exercises);
+            Exercise[] exercises = Game.GameInstance.Deserialize("exercises", Game.GameInstance.GetWorld().exercises);
             Console.WriteLine("You went " + exercises[choiceExercise].Name);
             Exercise(exercises[choiceExercise]);
         }
@@ -511,11 +508,11 @@ namespace CitySimulation
             }
             else
             {
-                Work(Game.GameInstance.Deserialize("works", Game.GameInstance.GetRealisticWorld().works)[choiceWork]);
+                Work(Game.GameInstance.Deserialize("works", Game.GameInstance.GetWorld().works)[choiceWork]);
             }
         }
 
-        private void Work(Work work) 
+        private void Work(HumanWork work) 
         {
             if (competence < work.Requirement)
             {
@@ -544,7 +541,7 @@ namespace CitySimulation
             }
         }
 
-        public void Employment(string path, Human human, Work work, List<Human> humans)
+        public void Employment(string path, Human human, HumanWork work, List<Human> humans)
         {
             if(work.Count > 5)
             {
@@ -563,7 +560,7 @@ namespace CitySimulation
             }
         }
 
-        public void ApplyForJob(Work work)
+        public void ApplyForJob(HumanWork work)
         {
             if(competence >= work.Requirement)
             {
@@ -577,7 +574,7 @@ namespace CitySimulation
             }
         }
 
-        public void WorkRegularily(Work work)
+        public void WorkRegularily(HumanWork work)
         {
             Console.WriteLine("Do you want " + name + " to go to work regularily from now on?\nPress [1] for Yes\nPress [2] for No");
             int choiceWorkRegular = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
@@ -694,9 +691,9 @@ namespace CitySimulation
         private void AddCatToHuman()
         {
             string[] tempGenderList = Game.GameInstance.Deserialize("genderList");
-            Game.GameInstance.GetRealisticWorld().genderList = tempGenderList;
+            Game.GameInstance.GetWorld().genderList = tempGenderList;
 
-            Cat cat = new Cat("", "", random.Next(1,10), random.Next(1,10), random.Next(1,3), random.Next(30,50), random.Next(5,10), 10, tempGenderList[random.Next(0, tempGenderList.Length-1)], random.Next(1,10), 10, Game.GameInstance.GetHuman().Id, 10);
+            Cat cat = new Cat(Game.GameInstance.AssignId(), "", random.Next(1,10), random.Next(1,10), random.Next(1,3), random.Next(30,50), random.Next(5,10), 10, tempGenderList[random.Next(0, tempGenderList.Length-1)], random.Next(1,10), 10, Game.GameInstance.GetHuman().Id, 10);
             pets.Add(cat);
             NamePet(cat);
             //Game.GameInstance.realisticWorld.CompleteTask(1);
@@ -707,9 +704,9 @@ namespace CitySimulation
         private void AddDogToHuman()
         {
             string[] tempGenderList = Game.GameInstance.Deserialize("genderList");
-            Game.GameInstance.GetRealisticWorld().genderList = tempGenderList;
+            Game.GameInstance.GetWorld().genderList = tempGenderList;
 
-            Dog dog = new Dog ("", "", random.Next(5,10), random.Next(1,10), random.Next(1,3), random.Next(30,100), random.Next(5,30), 10, tempGenderList[random.Next(0, tempGenderList.Length-1)], random.Next(1,10), 10, Game.GameInstance.GetHuman().Id, 10);
+            Dog dog = new Dog (Game.GameInstance.AssignId(), "", random.Next(5,10), random.Next(1,10), random.Next(1,3), random.Next(30,100), random.Next(5,30), 10, tempGenderList[random.Next(0, tempGenderList.Length-1)], random.Next(1,10), 10, Game.GameInstance.GetHuman().Id, 10);
             pets.Add(dog);
             NamePet(dog);
             // RealisticWorld.CompleteTask(4);
@@ -784,11 +781,11 @@ namespace CitySimulation
             }
             else
             {
-                petToRescue.Owner = Game.GameInstance.Deserialize("owners", Game.GameInstance.GetRealisticWorld().owners)[random.Next(0,4)].Name;
+                petToRescue.Owner = Game.GameInstance.Deserialize("owners", Game.GameInstance.GetWorld().owners)[random.Next(0,4)].Name;
                 Console.WriteLine(name + " has rescued an animal but it already has an owner called: \"" + petToRescue.Owner + "\"");
                 Console.WriteLine(petToRescue.Owner + " is so grateful and invites you to a coffee!");
                 Console.WriteLine("Slurrrrp! mhhhhhaaaaa...");
-                Drink(Game.GameInstance.GetRealisticWorld().freeCoffee);
+                Drink(Game.GameInstance.GetWorld().freeCoffee);
             }
         }
 
@@ -802,8 +799,7 @@ namespace CitySimulation
 
         public void GetALoan()
         {
-            int choiceLoan = InputForLoan();
-            switch(choiceLoan)
+            switch(InputForLoan())
             {
                 case 1:
                     Console.WriteLine("\nType in the amount you need. (max. 999$)");

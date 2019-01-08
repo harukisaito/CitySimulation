@@ -11,173 +11,153 @@ namespace CitySimulation
     class WeirdWorld : World
     {
         [JsonIgnore]
-        public Food[] pizzaFoods = new Food[]
-        {
-        };
-        [JsonIgnore]
-        public Drink[] pizzaDrinks = new Drink[]
-        {
-        };
-        [JsonIgnore]
-        public Work[] works = new Work[]
-        {
-        };
-        [JsonIgnore]
-        public Food[] foods = new Food[]
-        {
-        };
-        [JsonIgnore]
-        public string[] nameList = new string[]
-        {
-        }; 
-        [JsonIgnore]
-        public string[] genderList = new string[]
-        {
-        }; 
-
-        public List<Pizza> pizzas = new List<Pizza>();
-        public static Game game = Game.Instance();
-        private Random random = new Random();
+        public Robot currentPlayedRobot;
+        public List<Robot> robots = new List<Robot>();
 
         public WeirdWorld(int id, string name) : base(id, name)
         {
         }
 
-        private void DisplayPizzaAscii()
+        private void DisplayRobotAscii()
         {
             Console.WriteLine(
-            "\n          _....._" +
-            "\n       _.:`.--|--.`:._" +
-            "\n     .: .'|o  | o /'. '." +
-            "\n    // '.  | o|  /  o '.| " +
-            "\n   /|'._o'. | |o/ o_.-'o\\" +
-            "\n   || o '-.'.||/.-' o   ||" +
-            "\n   ||--o--o-->|<o-----o-||" +
-            "\n   \\  o _.-'/||'-._o  o//" +
-            "\n    \\.-'  o/ |o| o '-.//" +
-            "\n     '.'.o / o|  | o.'.'" +
-            "\n       `-:/.__|__o|:-'" +
-            "\n          `'--=--'`");
+            "         _\n" +
+            "        [ ]\n" +
+            "       (° °)\n" +
+            "        |>|\n" +
+            "     __/===\\__\n" +
+            "    //| o=o |\\\n" +
+            "  <]  | o=o |  [>\n" + 
+            "      \\====/\n" +
+            "     / / |  \\\n" + 
+            "    <_________>\n");
+            Console.WriteLine("\nThat's one ugly ass robot bro!");
         }
 
-        private void CreatePizza()
+        private void CreateRobot()
         {
-            bool empty = Game.GameInstance.CheckJson("pizzas");
-            if(empty == false)
-            {
-            //     Deserialize();
-            }
-            pizzas.Add(new Pizza(1, 1, ChoosePepperoni(), ChooseMushroom(), ChooseHam(), ChoosePineapple()));
-            // Serialize(pizzas);
+            Console.WriteLine("\nThe factory producing robots just kicked one out for its lacking capacbilites! From now on it's your robot.");
+            currentPlayedRobot = new Robot(Game.GameInstance.AssignId(), 10, 10, 10, 10, 10, 10, 1);
+            robots.Add(currentPlayedRobot);
+            Console.WriteLine("The Name of your Robot is: " + Game.GameInstance.GetRobot().Id);
+            DisplayRobotAscii();
+            currentPlayedRobot.AdoptingAlien();
         }
         public void Introduction()
         {
             Console.WriteLine("\nStart the Simulation inside a Simulation inside a simulation...");
-            Console.WriteLine("\nLet's create your first own pizza!");
-            CreatePizza();
-            DisplayPizzaAscii();
-            // int idchoice = Game.GameInstance.ChooseFromList<Pizza>("pizzas", pizzas);
-            Console.WriteLine("\nNow that you created your first pizza, adopt a human.");
-            // pizzas[idchoice].AdoptingHuman(pizzas[idchoice], pizzas);
+            CreateRobot();
         }
 
         public void Continue()
         {
             Console.WriteLine("\nStart the Simulation inside a Simulation inside a simulation...");
-            Console.WriteLine("\nPress [1] to create a new pizza\nPress [2] to play with your exisiting pizzas");
-            // int idchoice = Game.GameInstance.ChooseFromList<Pizza>("pizzas", pizzas);
+            Console.WriteLine("\nPress [1] to pick another robot up\nPress [2] to play with your exisiting robots");
+            int choice = int.Parse(Regex.Match(Console.ReadLine(),@"\d").Value);
+            if(choice == 1)
+            {
+                CreateRobot();
+            }
+            else if(choice == 2)
+            {
+                if(robots.Count == 1)
+                {
+                    currentPlayedRobot = robots[0];
+                }
+                else
+                {
+                    currentPlayedRobot = robots[Game.GameInstance.ChooseFromRobotList()];
+                }
+                Game.GameInstance.GetWeirdWorld().ChooseMethod();
+            }
         }
 
-
-        private bool ChoosePepperoni()
+        private void CheckTime()
         {
-            Console.WriteLine("Would you like some pepperonies on your pizza?\n\nPress [1] for Yes\nPress [2] for No");
-            int choicePepperoni = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            if(choicePepperoni == 1)
+            if(currentTime >= 24)
             {
-                return true;
+                CurrentTime %= 24;
+                Day++;
+            }
+            float temp = currentTime;
+            int hours = (int)currentTime;
+            float minutesdouble = currentTime %= 1;
+            minutesdouble *= 60;
+            int minutes = (int)(minutesdouble + 0.5);
+            if(hours <= 12)
+            {
+                DisplayTime(hours, minutes);
             }
             else
             {
-                return false;
+                hours -= 12;
+                DisplayTime(hours, minutes);
+                hours += 12;
             }
+            currentTime = temp;
+            Console.WriteLine("Day: " + Day);
         }
 
-        private bool ChooseMushroom()
+        private void DisplayTime(int hours, int minutes)
         {
-            Console.WriteLine("\nWould you like some mushrooms on your pizza?\n\nPress [1] for Yes\nPress [2] for No");
-            int choiceMushroom = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            if(choiceMushroom == 1)
+            if(minutes < 10)
             {
-                return true;
+                Console.WriteLine("\nTime: " + hours + ":0" + minutes + " AM");
             }
             else
             {
-                return false;
-            }
-        }
-        private bool ChooseHam()
-        {
-            Console.WriteLine("\nWould you like some ham on your pizza?\n\nPress [1] for Yes\nPress [2] for No");
-            int choiceHam = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            if(choiceHam == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        private bool ChoosePineapple()
-        {
-            Console.WriteLine("\nWould you like some pineapple on your pizza?\n\nPress [1] for Yes (why though)\nPress [2] for No (like any sane person)");
-            int choicePineapple = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            if(choicePineapple == 1)
-            {
-                Console.WriteLine("Ugh, so you are one of those people.");
-                return true;
-            }
-            else
-            {
-                return false;
+                Console.WriteLine("\nTime: " + hours + ":" + minutes + " PM");
             }
         }
 
-        public void ChooseMethod(Pizza pizza, List<Pizza> pizzas)
+        public void ChooseMethod()
         {
-            int choiceMethod;
-            int luck;
-            // Serialize(pizzas);
-            Console.WriteLine("\nWhat do you want to do next?\nPress [1] to eat something\nPress [2] to Drink something\nPress [3] to rest\nPress [4] to go work\nPress [5] to lose some pounds\nPress [6] to do something entertaining\nPress [7] to either feed your human or play with it\nPress [8] adpot another Human\nPress [9] to quit");
-            choiceMethod = int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value);
-            switch(choiceMethod)
+            CheckTime();
+            Game.GameInstance.GetRobot().AllStatus();
+            Game.GameInstance.GetRobot().AlienStatus();
+            Game.GameInstance.GetRobot().RegeneratingEnergy();
+            Console.WriteLine("\nWhat do you want to do next?\nPress [1] to consume something\nPress [2] to fill your tank\nPress [3] to rest\nPress [4] to go work\nPress [5] to clean your robot\nPress [6] to do something entertaining\nPress [7] to feed one or all your aliens\nPress [8] to look for another alien to adopt\nPress [9] to improve your skills\n\nPress [10] to quit");
+            switch(int.Parse(Regex.Match(Console.ReadLine(), @"\d+").Value))
             {
-                case 1: pizza.SelectAndEatFood(pizza, pizzas);
-                break;
-                case 2: pizza.SelectAndDrink(pizza, pizzas);
-                break;
-                case 3: pizza.Rest(pizza, pizzas);
-                break;
-                case 4: luck = random.Next(0,100);
-                        if(luck > 80)
-                        {
-                            // Deserialize();
-                            //pizza.RescueHuman(new Human(Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld.nameList[random.Next(0,9)], 0, 1, 30, 5, 10, Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld.genderList[random.Next(0,1)], 10, 10, new KarmaKonto(0), 0, 10), pizza);
-                        } 
-                        pizza.InputWork(pizza, pizzas);
-
-                break;
-                case 5: pizza.LosePounds(pizza, pizzas);
-                break;
-                case 6: pizza.Entertainment(pizza, pizzas);
-                break;
-                case 7: pizza.ActivityWithHuman(pizza, pizzas);
-                break;
-                case 8: pizza.AdoptingHuman(pizza, pizzas);
-                break;
-                case 9: game.Quit();
-                break;
+                case 1: 
+                    Game.GameInstance.GetRobot().SelectAndEatFood();
+                    break;
+                case 2: 
+                    Game.GameInstance.GetRobot().SelectAndDrinkOil();
+                    break;
+                case 3: 
+                    Game.GameInstance.GetRobot().Rest();
+                    break;
+                case 4: 
+                    Game.GameInstance.GetRobot().InputForWork();
+                    break;
+                case 5: 
+                    Game.GameInstance.GetRobot().Clean();
+                    break;
+                case 6: 
+                    Game.GameInstance.GetRobot().Entertainment();
+                    break;
+                case 7:
+                    Game.GameInstance.GetRobot().FeedingAlien();
+                    break;
+                case 8: 
+                    Random random = new Random();
+                    if(random.Next(0,100) <= 30)
+                    {
+                        Game.GameInstance.GetRobot().AdoptingAlien();
+                    }
+                    else
+                    {
+                        Console.WriteLine("No luck this time!");
+                        ChooseMethod();
+                    }
+                    break;
+                case 9: 
+                    Game.GameInstance.GetRobot().DecideForCompetence();
+                    break;
+                case 10: 
+                    Game.GameInstance.Quit();
+                    break;
             }
         }
     }

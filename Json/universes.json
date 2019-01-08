@@ -1,94 +1,133 @@
 [
   {
-    "realisticWorlds": [
-      {
-        "humans": [
-          {
-            "debt": {
-              "DebtAmount": 0.0,
-              "TempDay": 1
-            },
-            "pets": [
-              {
-                "Name": "asd",
-                "Loyalty": 8,
-                "Cuteness": 5,
-                "Owner": "25f4f19d-ce84-46e6-b775-dff0587af8f1",
-                "Id": "174dc5b6-5b43-45a9-b0fd-999389d1a9d9",
-                "Age": 2,
-                "Height": 35,
-                "Weight": 6,
+    "currentWorld": {
+      "realisticWorlds": [
+        {
+          "humans": [
+            {
+              "debt": {
+                "DebtAmount": 0.0,
+                "TempDay": 1
+              },
+              "pets": [
+                {
+                  "Name": "asd",
+                  "Loyalty": 1,
+                  "Cuteness": 6,
+                  "Owner": "6e32f1ea-35cc-4430-a73d-b860881aae96",
+                  "Id": "ed0f8fed-a26a-40da-8cc8-cf521277983f",
+                  "Age": 2,
+                  "Height": 42,
+                  "Weight": 7,
+                  "Energy": 10,
+                  "Gender": "male",
+                  "Fitness": 1,
+                  "Happiness": 10,
+                  "Health": 10
+                }
+              ],
+              "karmaKonto": {
+                "KarmaPoints": 1
+              },
+              "Name": "Jerry",
+              "Money": 58,
+              "Competence": 1,
+              "Id": "6e32f1ea-35cc-4430-a73d-b860881aae96",
+              "Age": 37,
+              "Height": 141,
+              "Weight": 50,
+              "Energy": 6,
+              "Gender": "male",
+              "Fitness": 10,
+              "Happiness": 6,
+              "Health": 10
+            }
+          ],
+          "tasks": [],
+          "realisticWorlds": [],
+          "weirdWorlds": [],
+          "Id": 1,
+          "Name": "earth1",
+          "CurrentTime": 11.1,
+          "Day": 1
+        }
+      ],
+      "weirdWorlds": [
+        {
+          "robots": [
+            {
+              "aliens": [],
+              "currentAlien": {
+                "Name": "alien1",
+                "SuperPower": false,
+                "Id": "b4a101c0-1ac6-4106-8a78-d812f5503a52",
+                "Age": 3,
+                "Height": 150,
+                "Weight": 50,
                 "Energy": 10,
-                "Gender": "male",
-                "Fitness": 3,
-                "Happiness": 10,
-                "Health": 10
-              }
-            ],
-            "karmaKonto": {
-              "KarmaPoints": 1
-            },
-            "Name": "Morty",
-            "Money": 24,
-            "Competence": 1,
-            "Id": "0c9c95fd-b207-4597-b09e-ede9997bc84b",
-            "Age": 22,
-            "Height": 164,
-            "Weight": 65,
-            "Energy": 10,
-            "Gender": "male",
-            "Fitness": 10,
-            "Happiness": 10,
-            "Health": 10
-          },
-          {
-            "debt": {
-              "DebtAmount": 0.0,
-              "TempDay": 1
-            },
-            "pets": [
-              {
-                "Name": "asd",
-                "Loyalty": 4,
-                "Cuteness": 7,
-                "Owner": "d389e377-de8e-4229-9508-15e2d7c9cc6e",
-                "Id": "8f708944-3b7f-4c47-9b8e-afe54d5fdcb5",
-                "Age": 1,
-                "Height": 46,
-                "Weight": 6,
+                "Gender": "",
+                "Fitness": 10,
+                "Happiness": 2,
+                "Health": 3
+              },
+              "Id": "82cff263-429c-4081-b12e-c363c3a29ea9",
+              "Oil": 6,
+              "Copper": 6,
+              "Aluminium": 6,
+              "Steel": 10,
+              "Salt": 30,
+              "CircuitHealth": 10,
+              "Competence": 1
+            }
+          ],
+          "realisticWorlds": [],
+          "weirdWorlds": [],
+          "Id": 1,
+          "Name": "robotssssss",
+          "CurrentTime": 13.0,
+          "Day": 1
+        },
+        {
+          "robots": [
+            {
+              "aliens": [],
+              "currentAlien": {
+                "Name": "alein",
+                "SuperPower": false,
+                "Id": "c3a49225-b13b-4950-89d8-ce357f2ae8ca",
+                "Age": 3,
+                "Height": 150,
+                "Weight": 50,
                 "Energy": 10,
-                "Gender": "male",
-                "Fitness": 4,
-                "Happiness": 10,
-                "Health": 10
-              }
-            ],
-            "karmaKonto": {
-              "KarmaPoints": 1
-            },
-            "Name": "Squanchy",
-            "Money": 11,
-            "Competence": 1,
-            "Id": "d389e377-de8e-4229-9508-15e2d7c9cc6e",
-            "Age": 63,
-            "Height": 73,
-            "Weight": 69,
-            "Energy": 8,
-            "Gender": "male",
-            "Fitness": 10,
-            "Happiness": 10,
-            "Health": 10
-          }
-        ],
-        "tasks": [],
-        "Id": 1,
-        "Name": "eath1",
-        "CurrentTime": 5.0,
-        "Day": 1
-      }
-    ],
-    "weirdWorlds": [],
-    "UniverseName": "uni1",
+                "Gender": "",
+                "Fitness": 10,
+                "Happiness": 2,
+                "Health": 3
+              },
+              "Id": "2beb6cbe-5124-4add-bc66-44ef71200ea3",
+              "Oil": 10,
+              "Copper": 10,
+              "Aluminium": 10,
+              "Steel": 10,
+              "Salt": 10,
+              "CircuitHealth": 10,
+              "Competence": 1
+            }
+          ],
+          "realisticWorlds": [],
+          "weirdWorlds": [],
+          "Id": 2,
+          "Name": "awdasdw",
+          "CurrentTime": 1.0,
+          "Day": 1
+        }
+      ],
+      "Id": 1,
+      "Name": "world",
+      "CurrentTime": 1.0,
+      "Day": 1
+    },
+    "UniverseName": "un1",
     "Id": 1
   }
 ]

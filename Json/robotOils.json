@@ -1,0 +1,26 @@
+[
+    {
+        "Name": "Petroleum",
+        "Oil": 2,
+        "Salt": 3,
+        "Time": 0.5
+    },
+    {
+        "Name": "High Quality Mineral Oil",
+        "Oil": 4,
+        "Salt": 6,
+        "Time": 0.3
+    },
+    {
+        "Name": "Organic oil",
+        "Oil": 3,
+        "Salt": 5,
+        "Time": 0.5
+    },
+    {
+        "Name": "Super 64",
+        "Oil": 5,
+        "Salt": 10,
+        "Time": 1
+    }
+]

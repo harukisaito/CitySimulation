@@ -1,5 +1,9 @@
 [
   {
+    "debt": {
+      "DebtAmount": 0.0,
+      "TempDay": 1
+    },
     "pets": [],
     "KarmaKonto": {
       "KarmaPoints": 0
@@ -17,6 +21,10 @@
     "Happiness": 0
   },
   {
+    "debt": {
+      "DebtAmount": 0.0,
+      "TempDay": 1
+    },
     "pets": [],
     "KarmaKonto": {
       "KarmaPoints": 0
@@ -34,6 +42,10 @@
     "Happiness": 0
   },
   {
+    "debt": {
+      "DebtAmount": 0.0,
+      "TempDay": 1
+    },
     "pets": [],
     "KarmaKonto": {
       "KarmaPoints": 0
@@ -51,6 +63,10 @@
     "Happiness": 0
   },
   {
+    "debt": {
+      "DebtAmount": 0.0,
+      "TempDay": 1
+    },
     "pets": [],
     "KarmaKonto": {
       "KarmaPoints": 0
@@ -68,6 +84,10 @@
     "Happiness": 0
   },
   {
+    "debt": {
+      "DebtAmount": 0.0,
+      "TempDay": 1
+    },
     "pets": [],
     "KarmaKonto": {
       "KarmaPoints": 0

@@ -35,22 +35,32 @@ namespace CitySimulation
 
         public Human GetHuman()
         {
-            return Game.GameInstance.currentPlayedUniverse.currentPlayedRealisticWorld.currentPlayedHuman;
+            return Game.GameInstance.currentPlayedUniverse.currentWorld.currentPlayedRealisticWorld.currentPlayedHuman;
         }
 
         public RealisticWorld GetRealisticWorld()
         {
-            return Game.GameInstance.currentPlayedUniverse.currentPlayedRealisticWorld;
+            return Game.GameInstance.currentPlayedUniverse.currentWorld.currentPlayedRealisticWorld;
+        }
+
+        public Robot GetRobot()
+        {
+            return Game.GameInstance.currentPlayedUniverse.currentWorld.currentPlayedWeirdWorld.currentPlayedRobot;
         }
 
         public WeirdWorld GetWeirdWorld()
         {
-            return Game.GameInstance.currentPlayedUniverse.currentPlayedWeirdWorld;
+            return Game.GameInstance.currentPlayedUniverse.currentWorld.currentPlayedWeirdWorld;
         }
 
-        private Universe GetUniverse()
+        public World GetWorld()
         {
-            return Game.GameInstance.currentPlayedUniverse;
+            return Game.GameInstance.currentPlayedUniverse.currentWorld;
+        }
+
+        public string AssignId()
+        {
+            return Guid.NewGuid().ToString();
         }
 
 
@@ -59,15 +69,22 @@ namespace CitySimulation
             universes = Deserialize("universes", universes);
             currentPlayedUniverse = new Universe(Numerate(), NameUniverse());
             universes.Add(currentPlayedUniverse);
-            // Serialize("universes");
-            currentPlayedUniverse.ChooseWorld();
+            currentPlayedUniverse.CreateNewWorld();
         }
 
         public void LoadGame()
         {
             universes = Deserialize("universes", universes);
-            currentPlayedUniverse = universes[ChooseFromUniverseList()];
-            currentPlayedUniverse.ChooseWorldContinue();
+            if(universes == null)
+            {
+                Console.WriteLine("You have not created an universe yet. Creating Universe now...");
+                NewGame();
+            }
+            else
+            {
+                currentPlayedUniverse = universes[ChooseFromUniverseList()];
+                currentPlayedUniverse.ContinueWorld();
+            }
         }
 
         private int Numerate()
@@ -78,12 +95,12 @@ namespace CitySimulation
 
         public int NumerateReal()
         {
-            return GetUniverse().realisticWorlds.Count + 1;
+            return GetWorld().realisticWorlds.Count + 1;
         }
 
         public int NumerateWeird()
         {
-            return GetUniverse().weirdWorlds.Count + 1;
+            return GetWorld().weirdWorlds.Count + 1;
         }
 
         public void ClearList()
@@ -120,7 +137,6 @@ namespace CitySimulation
 
         public int ChooseFromUniverseList()
         {
-            // universes = Deserialize("universes", universes);
             DisplayUniverses();
             Console.WriteLine("\nChoose your preferred universe! Press [1] to [" + universes.Count + "]");
             return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
@@ -128,21 +144,33 @@ namespace CitySimulation
 
         public int ChooseFromRealisticWorldList()
         {
-            // universes = Deserialize("universes", universes);
             DisplayRealisticWorlds();
-            Console.WriteLine("\nChoose your preferred world! Press [1] to [" + GetUniverse().realisticWorlds.Count + "]");
+            Console.WriteLine("\nChoose your preferred world! Press [1] to [" + GetWorld().realisticWorlds.Count + "]");
+            return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
+        }
+
+        public int ChooseFromWeirdWorldList()
+        {
+            DisplayWeirdWorlds();
+            Console.WriteLine("\nChoose your preferred world! Press [1] to [" + GetWorld().weirdWorlds.Count + "]");
             return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
         }
 
         public int ChooseFromHumanList()
         {
-            // universes = Deserialize("universes", universes);
             DisplayHumanList();
             Console.WriteLine("\nChoose your preferred human! Press [1] to [" + GetRealisticWorld().humans.Count + "]");
             return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
         }
 
-        public void DisplayUniverses()
+        public int ChooseFromRobotList()
+        {
+            DisplayRobotList();
+            Console.WriteLine("\nChoose your preferred robot! Press [1] to [" + GetWeirdWorld().robots.Count + "]");
+            return int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) - 1;
+        }
+
+        private void DisplayUniverses()
         {
             int counter = 1;
             foreach(Universe u in universes)
@@ -152,10 +180,10 @@ namespace CitySimulation
             }
         }
 
-        public void DisplayRealisticWorlds()
+        private void DisplayRealisticWorlds()
         {
             int counter = 1;
-            foreach(RealisticWorld rw in GetUniverse().realisticWorlds)
+            foreach(RealisticWorld rw in GetWorld().realisticWorlds)
             {
                 Console.WriteLine("[" + counter + "]: " + rw.Name);
                 Console.WriteLine("\nTime: " + rw.CurrentTime);
@@ -173,13 +201,44 @@ namespace CitySimulation
             }
         }
 
-        public void DisplayHumanList()
+        private void DisplayWeirdWorlds()
+        {
+            int counter = 1;
+            foreach(WeirdWorld ww in GetWorld().weirdWorlds)
+            {
+                Console.WriteLine("[" + counter + "]: " + ww.Name);
+                Console.WriteLine("\nTime: " + ww.CurrentTime);
+                Console.WriteLine("Day: " + ww.Day);
+                counter++;
+                Console.WriteLine("\nHumans on world " + ww.Name + ": ");
+                int counterRobot = 1;
+                foreach(Robot r in ww.robots)
+                {
+                    Console.WriteLine("\n[" + counterRobot + "] " + r.Id);
+                    r.AllStatus();
+                    Console.WriteLine("");
+                    counterRobot++;
+                }
+            }
+        }
+
+        private void DisplayHumanList()
         {
             int counter = 1;
             foreach(Human h in GetRealisticWorld().humans)
             {
                 Console.WriteLine("[" + counter + "] " + h.Name);
                 h.HealthStatus();
+                counter++;
+            }
+        }
+        private void DisplayRobotList()
+        {
+            int counter = 1;
+            foreach(Robot r in GetWeirdWorld().robots)
+            {
+                Console.WriteLine("[" + counter + "] " + r.Id);
+                r.AllStatus();
                 counter++;
             }
         }
@@ -249,55 +308,17 @@ namespace CitySimulation
             return JsonConvert.SerializeObject(universes, Formatting.Indented);
         }
 
-        // public void Serialize<T>(string certainPath, List<T> list)
-        // {
-        //     Console.WriteLine("SERIALIZING");
-        //     string json = SerializeObj(list);
-        //     FileWriter(certainPath, json);
-        // }
-
         public void SerializeUniverse(string certainPath)
         {
             Console.WriteLine("SERIALIZING UNIVERSE");
             FileWriter(certainPath, SerializeUniverseList());
         }
 
-        // public void SerializeHuman(string certainPath)
+        // public List<Human> Deserialize(string certainPath, List<Human> humans)
         // {
-        //     Console.WriteLine("SERIALIZING HUMANS");
-        //     FileWriter(certainPath, SerializeHumanList());
+        //     Console.WriteLine("DESERIALIZING");
+        //     return JsonConvert.DeserializeObject<List<Human>>(ReadJson(PathCreator(certainPath)));
         // }
-
-        // private string SerializeHumanList()
-        // {
-        //     return JsonConvert.SerializeObject(GetRealisticWorld().humans, Formatting.Indented, 
-        //         new JsonSerializerSettings()
-        //         { 
-        //             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        //         }
-        //     );
-        // }
-
-        // public void SerializeAll()
-        // {
-        //     SerializeUniverse("universes");
-        //     // SerializeHuman("humans");
-        // }
-
-        // public void Deserialize<T>(string certainPath, List<T> list)
-        // {
-        //     // Console.WriteLine("DESERIALIZING");
-        //    
-        //     // ReadJson(path);
-        //     // // Console.WriteLine(readJson);
-        //     // list = JsonConvert.DeserializeObject<List<T>>(readJson);
-        // }
-
-        public List<Human> Deserialize(string certainPath, List<Human> humans)
-        {
-            Console.WriteLine("DESERIALIZING");
-            return JsonConvert.DeserializeObject<List<Human>>(ReadJson(PathCreator(certainPath)));
-        }
 
         public List<Task> Deserialize(string certainPath, List<Task> tasks)
         {
@@ -311,21 +332,6 @@ namespace CitySimulation
             return JsonConvert.DeserializeObject<List<Universe>>(ReadJson(PathCreator(certainPath)));
         }
 
-        // public List<RealisticWorld> Deserialize(string certainPath, List<RealisticWorld> realisticworlds)
-        // {
-        //     Console.WriteLine("DESERIALIZING");
-            
-        //     // Console.WriteLine(readJson);
-        //     return JsonConvert.DeserializeObject<List<RealisticWorld>>(ReadJson(PathCreator(certainPath)));
-        // }
-
-        // public List<WeirdWorld> Deserialize(string certainPath, List<WeirdWorld> weirdWorlds)
-        // {
-        //     Console.WriteLine("DESERIALIZING");
-        //     // Console.WriteLine(readJson);
-        //     return JsonConvert.DeserializeObject<List<WeirdWorld>>(ReadJson(PathCreator(certainPath)));
-        // }
-
         public string[] Deserialize(string certainPath)
         {
             return JsonConvert.DeserializeObject<string[]>(ReadJson(PathCreator(certainPath)));
@@ -336,9 +342,19 @@ namespace CitySimulation
             return JsonConvert.DeserializeObject<Food[]>(ReadJson(PathCreator(certainPath)));
         }
 
+        public RobotFood[] Deserialize(string certainPath, RobotFood[] array)
+        {
+            return JsonConvert.DeserializeObject<RobotFood[]>(ReadJson(PathCreator(certainPath)));
+        }
+
         public Drink[] Deserialize(string certainPath, Drink[] array)
         {
             return JsonConvert.DeserializeObject<Drink[]>(ReadJson(PathCreator(certainPath)));
+        }
+
+        public RobotOil[] Deserialize(string certainPath, RobotOil[] array)
+        {
+            return JsonConvert.DeserializeObject<RobotOil[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Entertainment[] Deserialize(string certainPath, Entertainment[] array)
@@ -356,9 +372,14 @@ namespace CitySimulation
             return JsonConvert.DeserializeObject<Exercise[]>(ReadJson(PathCreator(certainPath)));
         }
 
-        public Work[] Deserialize(string certainPath, Work[] array)
+        public HumanWork[] Deserialize(string certainPath, HumanWork[] array)
         {
-            return JsonConvert.DeserializeObject<Work[]>(ReadJson(PathCreator(certainPath)));
+            return JsonConvert.DeserializeObject<HumanWork[]>(ReadJson(PathCreator(certainPath)));
+        }
+
+        public RobotWork[] Deserialize(string certainPath, RobotWork[] array)
+        {
+            return JsonConvert.DeserializeObject<RobotWork[]>(ReadJson(PathCreator(certainPath)));
         }
 
         public Human[] Deserialize(string certainPath, Human[] array)
