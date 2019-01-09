@@ -30,17 +30,17 @@
                 "KarmaPoints": 1
               },
               "Name": "Jerry",
-              "Money": 58,
+              "Money": 57,
               "Competence": 1,
               "Id": "6e32f1ea-35cc-4430-a73d-b860881aae96",
               "Age": 37,
               "Height": 141,
-              "Weight": 50,
-              "Energy": 6,
+              "Weight": 49,
+              "Energy": 1,
               "Gender": "male",
               "Fitness": 10,
-              "Happiness": 6,
-              "Health": 10
+              "Happiness": 8,
+              "Health": 13
             }
           ],
           "tasks": [],
@@ -48,7 +48,7 @@
           "weirdWorlds": [],
           "Id": 1,
           "Name": "earth1",
-          "CurrentTime": 11.1,
+          "CurrentTime": 20.2,
           "Day": 1
         }
       ],
@@ -105,9 +105,9 @@
                 "Health": 3
               },
               "Id": "2beb6cbe-5124-4add-bc66-44ef71200ea3",
-              "Oil": 10,
-              "Copper": 10,
-              "Aluminium": 10,
+              "Oil": 6,
+              "Copper": 6,
+              "Aluminium": 6,
               "Steel": 10,
               "Salt": 10,
               "CircuitHealth": 10,
@@ -118,7 +118,7 @@
           "weirdWorlds": [],
           "Id": 2,
           "Name": "awdasdw",
-          "CurrentTime": 1.0,
+          "CurrentTime": 13.0,
           "Day": 1
         }
       ],
@@ -129,5 +129,52 @@
     },
     "UniverseName": "un1",
     "Id": 1
+  },
+  {
+    "currentWorld": {
+      "realisticWorlds": [],
+      "weirdWorlds": [
+        {
+          "robots": [
+            {
+              "aliens": [],
+              "currentAlien": {
+                "Name": "alien 2",
+                "SuperPower": false,
+                "Id": "88eecc5c-2e9f-4f58-a82e-fa23511c3256",
+                "Age": 3,
+                "Height": 150,
+                "Weight": 50,
+                "Energy": 10,
+                "Gender": "",
+                "Fitness": 10,
+                "Happiness": 2,
+                "Health": 3
+              },
+              "Id": "5a8b05a9-d19a-4c9c-a297-578f11eb5313",
+              "Oil": -2,
+              "Copper": -2,
+              "Aluminium": -2,
+              "Steel": 10,
+              "Salt": 30,
+              "CircuitHealth": 10,
+              "Competence": 1
+            }
+          ],
+          "realisticWorlds": [],
+          "weirdWorlds": [],
+          "Id": 1,
+          "Name": "weird2",
+          "CurrentTime": 19.2,
+          "Day": 1
+        }
+      ],
+      "Id": 1,
+      "Name": "world",
+      "CurrentTime": 1.0,
+      "Day": 1
+    },
+    "UniverseName": "uni 2",
+    "Id": 2
   }
 ]

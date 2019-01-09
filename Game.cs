@@ -347,6 +347,11 @@ namespace CitySimulation
             return JsonConvert.DeserializeObject<RobotFood[]>(ReadJson(PathCreator(certainPath)));
         }
 
+        public AlienFood[] Deserialize(string certainPath, AlienFood[] array)
+        {
+            return JsonConvert.DeserializeObject<AlienFood[]>(ReadJson(PathCreator(certainPath)));
+        }
+
         public Drink[] Deserialize(string certainPath, Drink[] array)
         {
             return JsonConvert.DeserializeObject<Drink[]>(ReadJson(PathCreator(certainPath)));

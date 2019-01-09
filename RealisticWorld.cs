@@ -165,35 +165,48 @@ namespace CitySimulation
 
         private void CheckTime()
         {
-            if(CurrentTime >= 24)
+            if(Game.GameInstance.GetRealisticWorld().CurrentTime >= 24)
             {
-                CurrentTime %= 24;
+                Game.GameInstance.GetRealisticWorld().CurrentTime = Game.GameInstance.GetRealisticWorld().CurrentTime -= 24;
                 Day++;
             }
-            float temp = CurrentTime;
-            int hours = (int)CurrentTime;
-            float minutesdouble = CurrentTime %= 1;
+            float temp = Game.GameInstance.GetRealisticWorld().CurrentTime;
+            int hours = (int)Game.GameInstance.GetRealisticWorld().CurrentTime;
+            float minutesdouble = Game.GameInstance.GetRealisticWorld().CurrentTime %= 1;
             minutesdouble *= 60;
             int minutes = (int)(minutesdouble + 0.5);
             if(hours <= 12)
             {
-                DisplayTime(hours, minutes);
+                DisplayAM(hours, minutes);
             }
             else
             {
                 hours -= 12;
-                DisplayTime(hours, minutes);
+                DisplayPM(hours, minutes);
                 hours += 12;
             }
-            CurrentTime = temp;
+            Game.GameInstance.GetRealisticWorld().CurrentTime = temp;
             Console.WriteLine("Day: " + Day);
         }
 
-        private void DisplayTime(int hours, int minutes)
+
+        private void DisplayAM(int hours, int minutes)
         {
             if(minutes < 10)
             {
                 Console.WriteLine("\nTime: " + hours + ":0" + minutes + " AM");
+            }
+            else
+            {
+                Console.WriteLine("\nTime: " + hours + ":" + minutes + " AM");
+            }
+        }
+
+        private void DisplayPM(int hours, int minutes)
+        {
+            if(minutes < 10)
+            {
+                Console.WriteLine("\nTime: " + hours + ":0" + minutes + " PM");
             }
             else
             {

@@ -74,35 +74,48 @@ namespace CitySimulation
 
         private void CheckTime()
         {
-            if(currentTime >= 24)
+            if(Game.GameInstance.GetWeirdWorld().CurrentTime >= 24)
             {
-                CurrentTime %= 24;
+                Game.GameInstance.GetWeirdWorld().CurrentTime = Game.GameInstance.GetWeirdWorld().CurrentTime -= 24;
                 Day++;
             }
-            float temp = currentTime;
-            int hours = (int)currentTime;
-            float minutesdouble = currentTime %= 1;
+            float temp = Game.GameInstance.GetWeirdWorld().CurrentTime;
+            int hours = (int)Game.GameInstance.GetWeirdWorld().CurrentTime;
+            float minutesdouble = Game.GameInstance.GetWeirdWorld().CurrentTime %= 1;
             minutesdouble *= 60;
             int minutes = (int)(minutesdouble + 0.5);
             if(hours <= 12)
             {
-                DisplayTime(hours, minutes);
+                DisplayAM(hours, minutes);
             }
             else
             {
                 hours -= 12;
-                DisplayTime(hours, minutes);
+                DisplayPM(hours, minutes);
                 hours += 12;
             }
-            currentTime = temp;
+            Game.GameInstance.GetWeirdWorld().CurrentTime = temp;
             Console.WriteLine("Day: " + Day);
         }
 
-        private void DisplayTime(int hours, int minutes)
+
+        private void DisplayAM(int hours, int minutes)
         {
             if(minutes < 10)
             {
                 Console.WriteLine("\nTime: " + hours + ":0" + minutes + " AM");
+            }
+            else
+            {
+                Console.WriteLine("\nTime: " + hours + ":" + minutes + " AM");
+            }
+        }
+
+        private void DisplayPM(int hours, int minutes)
+        {
+            if(minutes < 10)
+            {
+                Console.WriteLine("\nTime: " + hours + ":0" + minutes + " PM");
             }
             else
             {
@@ -115,7 +128,7 @@ namespace CitySimulation
             CheckTime();
             Game.GameInstance.GetRobot().AllStatus();
             Game.GameInstance.GetRobot().AlienStatus();
-            Game.GameInstance.GetRobot().RegeneratingEnergy();
+            // Game.GameInstance.GetRobot().RegeneratingEnergy();
             Console.WriteLine("\nWhat do you want to do next?\nPress [1] to consume something\nPress [2] to fill your tank\nPress [3] to rest\nPress [4] to go work\nPress [5] to clean your robot\nPress [6] to do something entertaining\nPress [7] to feed one or all your aliens\nPress [8] to look for another alien to adopt\nPress [9] to improve your skills\n\nPress [10] to quit");
             switch(int.Parse(Regex.Match(Console.ReadLine(), @"\d+").Value))
             {

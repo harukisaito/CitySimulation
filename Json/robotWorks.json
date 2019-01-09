@@ -1,26 +1,26 @@
 [
     {
         "Name": "Office",
-        "Salt": 50,
-        "Time": 8,
+        "Income": 50,
+        "Time": 8.3,
         "Stress": 4,
         "Difficulty": 1000,
-        "Competence": 5
+        "Requirement": 5
     },
     {
         "Name": "McDonalds",
-        "Salt": 20,
-        "Time": 6,
+        "Income": 20,
+        "Time": 6.2,
         "Stress": 4,
         "Difficulty": 10,
-        "Competence": 1
+        "Requirement": 1
     },
     {
         "Name": "Delivery",
-        "Salt": 25,
-        "Time": 4,
+        "Income": 25,
+        "Time": 4.8,
         "Stress": 3,
         "Difficulty": 100,
-        "Competence": 2
+        "Requirement": 2
     }
 ]

@@ -185,8 +185,6 @@ namespace CitySimulation
                             oil -= robotWork.Stress;
                             copper -= robotWork.Stress;
                             aluminium -= robotWork.Stress;
-
-                            Game.GameInstance.GetWeirdWorld().CurrentTime += robotWork.Time;
                         }
                     }
                     else
@@ -350,11 +348,12 @@ namespace CitySimulation
             Console.WriteLine("Press [1] to feed one of your aliens\nPress [2] to feed all you aliens");
             if(int.Parse(Regex.Match(Console.ReadLine(), @"\d").Value) == 1)
             {
-                FeedAlien(SelectAlien(), DisplayAlienFoodList(Game.GameInstance.GetWorld().alienFoods));
+                FeedAlien(SelectAlien(), DisplayAlienFoodList(Game.GameInstance.Deserialize("alienFoods", Game.GameInstance.GetWorld().alienFoods)));
+                Game.GameInstance.GetWeirdWorld().ChooseMethod();
             }
             else
             {
-                FeedAllAliens(DisplayAlienFoodList(Game.GameInstance.GetWorld().alienFoods));
+                FeedAllAliens(DisplayAlienFoodList(Game.GameInstance.Deserialize("alienFoods", Game.GameInstance.GetWorld().alienFoods)));
             }
         }
 
@@ -381,7 +380,7 @@ namespace CitySimulation
             int counter = 1;
             foreach(AlienFood af in alienFoods)
             {
-                Console.WriteLine("[" + counter + "]" + af.Name);
+                Console.WriteLine("\n[" + counter + "] " + af.Name);
                 Console.WriteLine("Salt: " + af.Salt);
                 counter ++;
             }
@@ -394,7 +393,6 @@ namespace CitySimulation
             salt -= food.Salt;
             alien.Energy += food.Energy;
             Game.GameInstance.GetWeirdWorld().CurrentTime += food.Time;
-            Game.GameInstance.GetWeirdWorld().ChooseMethod();
         }
 
         private void FeedAllAliens(AlienFood food)
@@ -403,6 +401,7 @@ namespace CitySimulation
             {
                 FeedAlien(a, food);
             }
+            Game.GameInstance.GetWeirdWorld().ChooseMethod();
         }
 
         private void FinancialStatus()
